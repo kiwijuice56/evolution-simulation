@@ -1,7 +1,10 @@
 package physics;
 
-import java.awt.Color;
+import java.awt.*;
 
+/**
+ * Base collision object
+ */
 public class Circle {
 	private double x, y;
 	private double radius;
@@ -13,6 +16,10 @@ public class Circle {
 		this(0, 0, 1, 1, Color.WHITE);
 	}
 
+	public Circle(double x, double y, double radius, double mass) {
+		this(x, y, radius, mass, Color.WHITE);
+	}
+
 	public Circle(double x, double y, double radius, double mass, Color color) {
 		this.x = x;
 		this.y = y;
@@ -21,14 +28,32 @@ public class Circle {
 		this.color = color;
 	}
 
+	/**
+	 * Checks if colliding with other circle
+	 * @param other the other circle
+	 * @return true if colliding, false otherwise
+	 */
 	public boolean isColliding(Circle other) {
 		return distanceTo(other) < (other.getRadius() + getRadius());
 	}
 
+	/**
+	 * Returns the distance to another circle
+	 * @param other the other circle
+	 * @return the distance from the center of this circle to the other
+	 */
 	public double distanceTo(Circle other) {
 		return Math.sqrt(Math.pow(other.getX() - getX(), 2) + Math.pow(other.getY() - getY(), 2));
 	}
 
+	public void draw(Graphics g) {
+		g.setColor(getColor());
+		g.fillOval(
+				(int)Math.round(getX()-getRadius()),
+				(int)Math.round(getY()-getRadius()),
+				(int)Math.round(getRadius()*2),
+				(int)Math.round(getRadius()*2));
+	}
 	/* * * * * * * * * * * * * * * * * * * * * */
 	public double getX() {
 		return x;

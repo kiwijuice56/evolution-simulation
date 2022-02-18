@@ -4,9 +4,12 @@ import physics.*;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Renders the collision grid
+ */
 public class GridPanel extends JPanel {
-	private CollisionGrid grid;
-	private int width, height;
+	private final CollisionGrid grid;
+	private final int width, height;
 
 	public GridPanel(CollisionGrid grid) {
 		this.width = grid.getWidth();
@@ -18,13 +21,7 @@ public class GridPanel extends JPanel {
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, width, height);
-		for (Circle c : grid.getCircles()) {
-			g.setColor(c.getColor());
-			g.fillOval(
-					(int)Math.round(c.getX()-c.getRadius()),
-					(int)Math.round(c.getY()-c.getRadius()),
-					(int)Math.round(c.getRadius()*2),
-					(int)Math.round(c.getRadius()*2));
-		}
+		for (Circle c : grid.getCircles())
+			c.draw(g);
 	}
 }
