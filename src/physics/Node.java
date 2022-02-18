@@ -9,18 +9,14 @@ import java.util.HashSet;
  */
 public class Node extends Circle {
 	private final Set<Node> connections;
-	private int maxLinkLength = 64;
+	private int maxLinkLength = 32;
 
  	public Node() {
- 		this(null, 0, 0, 1, 1, Color.WHITE);
+ 		this(null, 0, 0);
  	}
 
-	public Node(Node linkedNode, double x, double y, double radius, double mass) {
-		this(linkedNode, x, y, radius, mass, Color.WHITE);
-	}
-
-	public Node(Node linkedNode, double x, double y, double radius, double mass, Color color) {
-   		super(x, y, radius, mass, color);
+	public Node(Node linkedNode, double x, double y) {
+   		super(x, y);
    		connections = new HashSet<>();
    		if (linkedNode != null) {
 	   		connections.add(linkedNode);
@@ -30,7 +26,7 @@ public class Node extends Circle {
 
 	public void draw(Graphics g) {
 		super.draw(g);
-		g.setColor(Color.WHITE);
+		g.setColor(Color.GRAY);
 		for (Node n : connections) {
 			g.drawLine(
 					(int)Math.round(getX()), (int)Math.round(getY()),

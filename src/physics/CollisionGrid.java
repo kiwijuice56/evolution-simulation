@@ -1,10 +1,7 @@
 package physics;
 
 import java.awt.Color;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 public class CollisionGrid {
 	private List<List<Set<Circle>>> grid;
@@ -28,6 +25,7 @@ public class CollisionGrid {
 
 	public void stepCollision() {
 		for (Circle c : circles) {
+
 			// Remove circle from current cells before movement to prevent self-collision and memory leaks
 			for (Set<Circle> cell : getGridCells(c))
 				cell.remove(c);
@@ -36,24 +34,25 @@ public class CollisionGrid {
 			c.setX(c.getX() + c.getvX());
 			c.setY(c.getY() + c.getvY());
 
-			// Temporary color gradient
-			c.setColor(new Color(Math.max(0, Math.min(255, (int)((c.getX()/width)*255))), 20, 150));
-
 			// Check collision in every cell that contained this circle
 			for (Set<Circle> cell : getGridCells(c)) {
 				// Keep circle within bounds of the grid
 				double lBound = c.getX() - c.getRadius(), rBound = c.getX() + c.getRadius();
 				double bBound = c.getY() - c.getRadius(), tBound = c.getY() + c.getRadius();
 				if (lBound < 0 || rBound >= width || bBound < 0 || tBound >= height) {
-					c.setX(Math.min(width-c.getRadius(), Math.max(c.getRadius(), c.getX())));
-					c.setY(Math.min(height-c.getRadius(), Math.max(c.getRadius(), c.getY())));
+					c.setX(Math.min(width-c.getRadius()-1, Math.max(c.getRadius(), c.getX())));
+					c.setY(Math.min(height-c.getRadius()-1, Math.max(c.getRadius(), c.getY())));
 					c.setvX(c.getvX()*-1);
 					c.setvY(c.getvY()*-1);
 				}
 
 				// Simulate elastic collision between each colliding circle
 				for (Circle o: cell) {
-					if (c.isColliding(o)){
+					if (c.isColliding(o)) {
+						c.collidedWith(o);
+						o.collidedWith(c);
+						if (!(c.isSolid() && o.isSolid()))
+							continue;
 						// Move this circle out of the collider
 						double distance = c.distanceTo(o);
 						double depth = (c.getRadius() + o.getRadius()) - distance;
@@ -88,11 +87,16 @@ public class CollisionGrid {
 
 				}
 			}
-
 			for (Set<Circle> cell : getGridCells(c))
 				cell.add(c);
 
+			c.collisionStep();
 		}
+		// Slightly awkward, need to remove all circle ref from grid and then remove circles entirely
+		// without concurrent modification exception
+		circles.stream().filter(Circle::isDeletable).forEach(this::removeFromCells);
+		circles.removeIf(Circle::isDeletable);
+
 	}
 
 	public List<Set<Circle>> getGridCells(Circle circle) {
@@ -111,12 +115,25 @@ public class CollisionGrid {
 		return cells;
 	}
 
+	public void removeFromCells(Circle circle) {
+		for (Set<Circle> cell : getGridCells(circle))
+			cell.remove(circle);
+	}
+
 	public boolean addCircle(Circle circle) {
 		if (circles.contains(circle))
 			return false;
 		circles.add(circle);
 		for (Set<Circle> cell : getGridCells(circle))
 			cell.add(circle);
+		return true;
+	}
+
+	public boolean removeCircle(Circle circle) {
+		if (!circles.contains(circle))
+			return false;
+		circles.remove(circle);
+		removeFromCells(circle);
 		return true;
 	}
 

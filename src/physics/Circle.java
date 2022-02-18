@@ -7,25 +7,24 @@ import java.awt.*;
  */
 public class Circle {
 	private double x, y;
-	private double radius;
 	private double vX, vY;
-	private double mass;
-	private Color color;
+	protected double radius;
+	protected double mass;
+	protected boolean isSolid = true;
+	protected Color color;
+	private boolean deletable = false;
 
 	public Circle() {
-		this(0, 0, 1, 1, Color.WHITE);
+		this(0, 0);
 	}
 
-	public Circle(double x, double y, double radius, double mass) {
-		this(x, y, radius, mass, Color.WHITE);
-	}
-
-	public Circle(double x, double y, double radius, double mass, Color color) {
+	public Circle(double x, double y) {
 		this.x = x;
 		this.y = y;
-		this.radius = radius;
-		this.mass = mass;
-		this.color = color;
+		this.radius = 2.0;
+		this.mass = 1.0;
+
+		this.color = Color.WHITE;
 	}
 
 	/**
@@ -35,6 +34,14 @@ public class Circle {
 	 */
 	public boolean isColliding(Circle other) {
 		return distanceTo(other) < (other.getRadius() + getRadius());
+	}
+
+	public void collidedWith(Circle other) {
+
+	}
+
+	public void delete() {
+		deletable = true;
 	}
 
 	/**
@@ -53,6 +60,10 @@ public class Circle {
 				(int)Math.round(getY()-getRadius()),
 				(int)Math.round(getRadius()*2),
 				(int)Math.round(getRadius()*2));
+	}
+
+	public void collisionStep() {
+
 	}
 	/* * * * * * * * * * * * * * * * * * * * * */
 	public double getX() {
@@ -75,10 +86,6 @@ public class Circle {
 		return radius;
 	}
 
-	public void setRadius(double radius) {
-		this.radius = radius;
-	}
-
 	public double getvX() {
 		return vX;
 	}
@@ -99,16 +106,17 @@ public class Circle {
 		return mass;
 	}
 
-	public void setMass(double mass) {
-		this.mass = mass;
-	}
-
 	public Color getColor() {
 		return color;
 	}
 
-	public void setColor(Color color) {
-		this.color = color;
+	public boolean isDeletable() {
+		return deletable;
 	}
+
+	public boolean isSolid() {
+		return isSolid;
+	}
+
 	/* * * * * * * * * * * * * * * * * * * * * */
 }
