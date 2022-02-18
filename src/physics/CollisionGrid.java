@@ -34,6 +34,7 @@ public class CollisionGrid {
 			c.setX(c.getX() + c.getvX());
 			c.setY(c.getY() + c.getvY());
 
+			boolean isUndetected = true;
 			// Check collision in every cell that contained this circle
 			for (Set<Circle> cell : getGridCells(c)) {
 				// Keep circle within bounds of the grid
@@ -49,6 +50,7 @@ public class CollisionGrid {
 				// Simulate elastic collision between each colliding circle
 				for (Circle o: cell) {
 					if (c.isColliding(o)) {
+						isUndetected = false;
 						c.collidedWith(o);
 						o.collidedWith(c);
 						if (!(c.isSolid() && o.isSolid()))
@@ -87,6 +89,8 @@ public class CollisionGrid {
 
 				}
 			}
+			if (isUndetected)
+				c.isUndetectable();
 			for (Set<Circle> cell : getGridCells(c))
 				cell.add(c);
 
@@ -126,14 +130,6 @@ public class CollisionGrid {
 		circles.add(circle);
 		for (Set<Circle> cell : getGridCells(circle))
 			cell.add(circle);
-		return true;
-	}
-
-	public boolean removeCircle(Circle circle) {
-		if (!circles.contains(circle))
-			return false;
-		circles.remove(circle);
-		removeFromCells(circle);
 		return true;
 	}
 

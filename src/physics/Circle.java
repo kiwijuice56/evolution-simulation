@@ -65,6 +65,13 @@ public class Circle {
 	public void collisionStep() {
 
 	}
+
+	/**
+	 * Called when this circle did not collide with anything during a collision step
+	 */
+	public void isUndetectable() {
+
+	}
 	/* * * * * * * * * * * * * * * * * * * * * */
 	public double getX() {
 		return x;

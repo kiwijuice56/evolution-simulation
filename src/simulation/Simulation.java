@@ -1,62 +1,57 @@
+package simulation;
+
 import biotic.Food;
-import biotic.organic_nodes.EatingNode;
-import biotic.organic_nodes.JitterNode;
-import graphic_interface.ApplicationFrame;
-import biotic.organic_nodes.RotationalNode;
-import biotic.organic_nodes.OrganicNode;
+import biotic.organic_nodes.*;
 import physics.Node;
 import physics.CollisionGrid;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class Simulation {
-	private static final int MIN_MILLIS_PER_FRAME = 5;
+
+	private final CollisionGrid grid;
+
 	private final Set<OrganicNode> organicNodes;
+	private final Set<OrganicNode> toAdd;
 
-	public Simulation(CollisionGrid grid, ApplicationFrame frame) {
+	public Simulation(CollisionGrid grid)  {
+		this.grid = grid;
 		organicNodes = new HashSet<>();
-		createOrganism(grid, 100, 100, 3, 3);
-		createOrganism(grid, 500, 500, 2, 2);
-		createOrganism(grid, 250, 300, 1, 1);
-		createSnake(grid, 600, 500, 16);
-		createMembrane(grid,  16, 600, 100);
+		toAdd = new HashSet<>();
+
+		addOrganicNode(new ReproductiveNode(null, 200, 200, 4.0,
+				new ArrayList<>(Arrays.asList("eat 0", "jit 0", "rot 0", "nod 1", "nod 1", "nod 1", "nod 2", "nod 3")), this));
+		addOrganicNode(new ReproductiveNode(null, 200, 500, 4.0,
+				new ArrayList<>(Arrays.asList("eat 0", "jit 0", "rot 0", "nod 3", "nod 4", "nod 5", "nod 6", "nod 7", "nod 8", "nod 9", "nod 10")), this));
 		initializeFood(grid);
-		// Run collision steps in infinite loop
-		while (true) {
-			long start = System.currentTimeMillis();
+	}
 
-			grid.stepCollision();
-			List<OrganicNode> toKill = new ArrayList<>();
-			for (OrganicNode node: organicNodes){
-				boolean isAlive = node.stepLife();
-				if (!isAlive) {
-					node.delete();
-					toKill.add(node);
-				}
-			}
-			for (OrganicNode node : toKill)
-				organicNodes.remove(node);
-			frame.repaint();
+	public void stepSimulation() {
+		for (OrganicNode node: organicNodes)
+			node.stepLife();
+		organicNodes.addAll(toAdd);
+		organicNodes.removeIf(OrganicNode::isDeletable);
+	}
 
-			long end = System.currentTimeMillis();
-			//System.out.println(end-start);
-			try {
-				TimeUnit.MILLISECONDS.sleep(Math.max(0, MIN_MILLIS_PER_FRAME - (end-start)));
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-
+	public boolean addOrganicNode(OrganicNode node) {
+		if (toAdd.contains(node))
+			return false;
+		toAdd.add(node);
+		grid.addCircle(node);
+		return true;
 	}
 
 	private void initializeFood(CollisionGrid grid) {
 		for (int i = 0; i < 30; i++) {
 			for (int j = 0; j < 50; j++) {
 				Food f = new Food((j*24) + (15*Math.random()) - 7.5, (i*24)  + (10*Math.random()) - 5);
+				boolean isColliding = false;
+				for (OrganicNode o: organicNodes)
+					if (f.isColliding(o))
+						isColliding = true;
+				if (isColliding)
+					continue;
 				grid.addCircle(f);
 			}
 		}

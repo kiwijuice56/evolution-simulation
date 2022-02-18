@@ -2,7 +2,7 @@ package biotic.organic_nodes;
 
 import physics.Node;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class RotationalNode extends OrganicNode {
 	private double accelX;
@@ -22,12 +22,13 @@ public class RotationalNode extends OrganicNode {
 		turningPoint = Math.random() * Math.PI;
 	}
 
+	@Override
 	public void collisionStep() {
 		turningPoint = (turningPoint + Math.random()/50) % (2*Math.PI);
 		accelX = Math.cos(turningPoint);
 		accelY = Math.sin(turningPoint);
-		setvX(getvX() + accelX/25);
-		setvY(getvY() + accelY/25);
+		setvX(getvX() + accelX/50);
+		setvY(getvY() + accelY/50);
 	}
 
 }

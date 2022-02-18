@@ -4,10 +4,11 @@ import biotic.Food;
 import physics.Circle;
 import physics.Node;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class EatingNode extends OrganicNode {
 	public EatingNode() {
+		this(null, 0, 0, 1.0);
 	}
 
 	public EatingNode(Node linkedNode, double x, double y, double energy) {

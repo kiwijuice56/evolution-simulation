@@ -7,6 +7,7 @@ import java.awt.*;
 
 public class Food extends Circle {
 	public Food() {
+		this(0, 0);
 	}
 
 	public Food(double x, double y) {

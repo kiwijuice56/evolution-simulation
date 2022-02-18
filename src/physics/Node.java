@@ -16,12 +16,11 @@ public class Node extends Circle {
  	}
 
 	public Node(Node linkedNode, double x, double y) {
-   		super(x, y);
-   		connections = new HashSet<>();
-   		if (linkedNode != null) {
-	   		connections.add(linkedNode);
-	   		linkedNode.getConnections().add(this);	
-   		}
+		super(x, y);
+		connections = new HashSet<>();
+		if (linkedNode != null)
+	   		connect(linkedNode);
+		isSolid = false;
 	}
 
 	public void draw(Graphics g) {
@@ -67,6 +66,17 @@ public class Node extends Circle {
 				super.setY(getY() + deform*dir);
 			}
 		}
+	}
+
+	public void connect(Node node) {
+		node.getConnections().add(this);
+		getConnections().add(node);
+	}
+
+	@Override
+	public void isUndetectable() {
+		super.isUndetectable();
+		isSolid = true;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * * */

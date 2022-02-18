@@ -2,7 +2,7 @@ package biotic.organic_nodes;
 
 import physics.Node;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class JitterNode extends OrganicNode {
 	private double accelX;
@@ -20,6 +20,7 @@ public class JitterNode extends OrganicNode {
 		this.mass = 3.0;
 	}
 
+	@Override
 	public void collisionStep() {
 		accelX = Math.random() - 0.5;
 		accelY = Math.random() - 0.5;

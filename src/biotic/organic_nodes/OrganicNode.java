@@ -2,7 +2,7 @@ package biotic.organic_nodes;
 
 import physics.Node;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class OrganicNode extends Node {
 	private double energy;
@@ -18,7 +18,7 @@ public class OrganicNode extends Node {
 		this.hunger = 0.0001;
 		this.maxEnergy = 1.0;
 
-		this.energy = maxEnergy;
+		this.energy = energy;
 		this.color = new Color(84, 61, 255);
 		this.radius = 3.0;
 
