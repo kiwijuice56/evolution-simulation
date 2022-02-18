@@ -3,6 +3,7 @@ package graphic_interface;
 import physics.*;
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Renders the collision grid
@@ -21,7 +22,7 @@ public class GridPanel extends JPanel {
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, width, height);
-		for (Circle c : grid.getCircles())
+		for (Circle c : new ArrayList<>(grid.getCircles()))
 			c.draw(g);
 	}
 }

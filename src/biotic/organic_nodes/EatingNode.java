@@ -14,7 +14,9 @@ public class EatingNode extends OrganicNode {
 		super(linkedNode, x, y, energy);
 		this.radius = 6.0;
 		this.mass = 3.0;
-		this.color = new Color(200, 70, 125);
+		this.maxEnergy = 2.0;
+		this.hunger = 0.0002;
+		this.color = new Color(45, 195, 155);
 	}
 
 	@Override
@@ -22,7 +24,7 @@ public class EatingNode extends OrganicNode {
 		if (other instanceof Food && !(other.isDeletable())) {
 			other.delete();
 			if (getEnergy() < getMaxEnergy())
-			setEnergy(getEnergy() + 0.3);
+				setEnergy(getEnergy() + other.getMass()/10);
 		}
 	}
 }

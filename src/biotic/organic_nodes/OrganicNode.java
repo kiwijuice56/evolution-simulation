@@ -29,8 +29,19 @@ public class OrganicNode extends Node {
 		for (Node other : getConnections()) {
 			OrganicNode otherOrganic = (OrganicNode) other;
 			double averageEnergy = (otherOrganic.getEnergy() + getEnergy()) / 2.0;
-			setEnergy(averageEnergy);
-			otherOrganic.setEnergy(averageEnergy);
+			if (averageEnergy > getMaxEnergy()) {
+				double excess = averageEnergy - getMaxEnergy();
+				setEnergy(averageEnergy);
+				otherOrganic.setEnergy(averageEnergy + excess);
+			} else if (averageEnergy > otherOrganic.getMaxEnergy()) {
+				double excess = averageEnergy - otherOrganic.getMaxEnergy();
+				setEnergy(averageEnergy + excess);
+				otherOrganic.setEnergy(averageEnergy);
+			} else {
+				setEnergy(averageEnergy);
+				otherOrganic.setEnergy(averageEnergy);
+			}
+
 		}
 		return energy > 0;
 	}
@@ -49,7 +60,7 @@ public class OrganicNode extends Node {
 	}
 
 	public void setEnergy(double energy) {
-		this.energy = Math.max(0, energy);
+		this.energy = Math.min(maxEnergy, Math.max(0, energy));
 	}
 
 	public double getHunger() {

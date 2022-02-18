@@ -13,7 +13,7 @@ public class Food extends Circle {
 		super(x, y);
 		this.radius = Math.round(Math.random() * 2 + 3);
 		this.mass = radius;
-		this.color = new Color((int)(Math.random()*30) + 60, (int)(Math.random()*40) + 150 , 70);
+		this.color = new Color((int)(Math.random()*50) + 30, (int)(Math.random()*100) + 100 , 70);
 
 	}
 
