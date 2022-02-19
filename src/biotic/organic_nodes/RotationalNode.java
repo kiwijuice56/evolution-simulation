@@ -15,8 +15,8 @@ public class RotationalNode extends OrganicNode {
 
 	public RotationalNode(Node linkedNode, double x, double y, double energy) {
 		super(linkedNode, x, y, energy);
-		this.hunger = 0.0003;
-		this.color = new Color(255, 77, 95);
+		this.hunger = 0.0006;
+		this.color = new Color(175, 90, 125);
 		this.radius = 5.0;
 		this.mass = 3.0;
 		turningPoint = Math.random() * Math.PI;

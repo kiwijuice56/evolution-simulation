@@ -13,11 +13,11 @@ public class EatingNode extends OrganicNode {
 
 	public EatingNode(Node linkedNode, double x, double y, double energy) {
 		super(linkedNode, x, y, energy);
-		this.radius = 6.0;
+		this.radius = 7.0;
 		this.mass = 3.0;
-		this.maxEnergy = 2.0;
-		this.hunger = 0.0002;
-		this.color = new Color(45, 195, 155);
+		this.maxEnergy = 2.5;
+		this.hunger = 0.0003;
+		this.color = new Color(45, 195, 255);
 	}
 
 	@Override

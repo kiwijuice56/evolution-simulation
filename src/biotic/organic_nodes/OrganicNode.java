@@ -15,12 +15,12 @@ public class OrganicNode extends Node {
 
 	public OrganicNode(Node linkedNode, double x, double y, double energy) {
 		super(linkedNode, x, y);
-		this.hunger = 0.0001;
+		this.hunger = 0.00005;
 		this.maxEnergy = 1.0;
 
 		this.energy = energy;
-		this.color = new Color(84, 61, 255);
-		this.radius = 3.0;
+		this.color = new Color(35, 55, 225);
+		this.radius = 4.0;
 
 	}
 
@@ -71,6 +71,7 @@ public class OrganicNode extends Node {
 		return maxEnergy;
 	}
 
+	@Override
 	public Color getColor() {
 		double scale = Math.min(1, getEnergy() / getMaxEnergy() + .05);
 		return new Color(

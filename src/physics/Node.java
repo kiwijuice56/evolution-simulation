@@ -73,12 +73,6 @@ public class Node extends Circle {
 		getConnections().add(node);
 	}
 
-	@Override
-	public void isUndetectable() {
-		super.isUndetectable();
-		isSolid = true;
-	}
-
 	/* * * * * * * * * * * * * * * * * * * * * */
 	public Set<Node> getConnections() {
 		return connections;

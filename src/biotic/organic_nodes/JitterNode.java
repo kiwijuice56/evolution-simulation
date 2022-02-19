@@ -15,7 +15,7 @@ public class JitterNode extends OrganicNode {
 	public JitterNode(Node linkedNode, double x, double y, double energy) {
 		super(linkedNode, x, y, energy);
 		this.hunger = 0.0002;
-		this.color = new Color(255, 77, 0);
+		this.color = new Color(155, 135, 255);
 		this.radius = 5.0;
 		this.mass = 3.0;
 	}

@@ -70,7 +70,7 @@ public class Circle {
 	 * Called when this circle did not collide with anything during a collision step
 	 */
 	public void isUndetectable() {
-
+		isSolid = true;
 	}
 	/* * * * * * * * * * * * * * * * * * * * * */
 	public double getX() {

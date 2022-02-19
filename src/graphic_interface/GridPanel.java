@@ -23,6 +23,7 @@ public class GridPanel extends JPanel {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, width, height);
 		for (Circle c : new ArrayList<>(grid.getCircles()))
-			c.draw(g);
+			if (c != null)
+				c.draw(g);
 	}
 }
