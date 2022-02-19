@@ -2,9 +2,9 @@
 This program simulates emergence and natural selection in biological systems using a few basic components.
 
 <p align="center">
-  <img src="img/screenshot2.png" alt="sample execution"/>
+  <img src="img/screenshot1.png" alt="sample execution"/>
 </p>
-<figcaption align = "center"><b>Sample execution</b></figcaption>
+<p align="center"><b>Sample execution</b></p>
 
 
 ## Organism Mechanics
@@ -13,7 +13,7 @@ Organisms are represented with nodes in a graph, each color representing a speci
 <p align="center">
   <img src="img/screenshot2.png" alt="image of organism"/>
 </p>
-<figcaption align = "center"><b>An organism!</b></figcaption>
+<p align="center"><b>An organism!</b></p>
 
 Each node has an energy property (represented by brightness) that must
 be kept above zero to prevent the organism from starving. This can
@@ -22,7 +22,7 @@ be achieved through consuming food particles or predation.
 <p align="center">
   <img src="img/screenshot3.png" alt="image of food"/>
 </p>
-<figcaption align = "center"><b>Food producers and particles</b></figcaption>
+<p align = "center"><b>Food producers and particles</b></p>
 
 
 If an organism has enough energy, it can duplicate its reproductive node 
@@ -51,11 +51,11 @@ nod 6
 jit 7
 ```
 <p align="center">
-  <img src="img/screenshot3.png" alt="image of organism from code"/>
+  <img src="img/screenshot5.png" alt="image of organism from code"/>
 </p>
-<figcaption align = "center"><b>Organism created from code example</b></figcaption>
+<p align = "center"><b>Organism created from code example</b></p>
 
-Multiple node connections can be made in one line.
+Also, multiple node connections can be made in one line.
 ```
 eat 0
 eat 0 1
@@ -69,6 +69,7 @@ types can be created.
 <p align="center">
   <img src="img/screenshot4.png" alt="image of crowding organisms"/>
 </p>
-<figcaption align = "center"><b>Evolution</b></figcaption>
+<p align = "center"><b>Evolution</b></p>
+
 Experiment with the starting conditions to see what organisms
 you can create!
