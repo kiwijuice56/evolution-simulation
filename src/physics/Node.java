@@ -9,7 +9,8 @@ import java.util.HashSet;
  */
 public class Node extends Circle {
 	private final Set<Node> connections;
-	private int maxLinkLength = 32;
+	private int maxLinkLength = 16;
+	private final static double MAX_DEFORMATION = 1.0;
 
  	public Node() {
  		this(null, 0, 0);
@@ -42,9 +43,11 @@ public class Node extends Circle {
 	public void setX(double x) {
 		super.setX(x);
 		for (Node n : connections) {
-			if (distanceTo(n) > n.getMaxLinkLength()){
-				double deform = (distanceTo(n) - n.getMaxLinkLength())/2;
+			if (distanceTo(n) > n.getMaxLinkLength()) {
+				double deform = Math.min(MAX_DEFORMATION, (distanceTo(n) - n.getMaxLinkLength())/2);
 				double dir = -Math.signum(getX() - n.getX());
+				if (dir == 0)
+					return;
 				setvX(getvX() + dir * deform/getMass());
 				super.setX(getX() + deform*dir);
 			}
@@ -60,7 +63,7 @@ public class Node extends Circle {
 		super.setY(y);
 		for (Node n : connections) {
 			if (distanceTo(n) > n.getMaxLinkLength()){
-				double deform = (distanceTo(n) - n.getMaxLinkLength())/2;
+				double deform = Math.min(MAX_DEFORMATION, (distanceTo(n) - n.getMaxLinkLength())/2);
 				double dir = -Math.signum(getY() - n.getY());
 				setvY(getvY() + dir * deform/getMass());
 				super.setY(getY() + deform*dir);

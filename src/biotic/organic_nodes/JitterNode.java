@@ -18,6 +18,7 @@ public class JitterNode extends OrganicNode {
 		this.color = new Color(155, 135, 255);
 		this.radius = 5.0;
 		this.mass = 3.0;
+		this.resistance = 1.0;
 	}
 
 	@Override

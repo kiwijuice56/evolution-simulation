@@ -2,7 +2,7 @@ package simulation;
 
 import biotic.Food;
 import biotic.organic_nodes.*;
-import physics.FoodProducer;
+import biotic.FoodProducer;
 import physics.CollisionGrid;
 
 import java.util.*;
@@ -21,8 +21,11 @@ public class Simulation {
 		toAdd = new HashSet<>();
 		foodProducers = new HashSet<>();
 
-		addOrganicNode(new ReproductiveNode(null, 300, 300, 3.0,
-				new ArrayList<>(Arrays.asList("eat 0", "rot 0", "nod 0", "nod 3", "nod 4", "nod 5", "nod 6", "jit 7")), this));
+		ReproductiveNode x = new ReproductiveNode(null, 300, 300, 5.0,
+				new ArrayList<>(Arrays.asList("eat 0", "jit 1", "rot 2", "rot 2", "nod 3", "nod 3", "nod 3", "nod 4", "nod 4", "nod 4", "sto 2", "pre 11")), this);
+		addOrganicNode(x);
+		System.out.println(x.getCode());
+		System.out.println(x.getPermCode());
 		initializeFood(grid);
 	}
 
@@ -60,22 +63,6 @@ public class Simulation {
 			FoodProducer f = new FoodProducer(Math.random() * grid.getWidth(), Math.random() * grid.getHeight(), this);
 			grid.addCircle(f);
 			foodProducers.add(f);
-		}
-
-		for (int i = 0; i < 15; i++) {
-			for (int j = 0; j < 15; j++) {
-				Food f = new Food((j*24) + (15*Math.random()) - 7.5, (i*24)  + (10*Math.random()) - 5);
-				boolean isColliding = false;
-				for (OrganicNode o: organicNodes)
-					if (f.isColliding(o))
-						isColliding = true;
-				for (FoodProducer o: foodProducers)
-					if (f.isColliding(o))
-						isColliding = true;
-				if (isColliding)
-					continue;
-				grid.addCircle(f);
-			}
 		}
 	}
 }

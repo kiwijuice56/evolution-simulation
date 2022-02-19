@@ -8,6 +8,7 @@ public class OrganicNode extends Node {
 	private double energy;
 	protected double hunger;
 	protected double maxEnergy;
+	protected double resistance;
 
 	public OrganicNode() {
 		this(null, 0, 0, 1);
@@ -21,7 +22,7 @@ public class OrganicNode extends Node {
 		this.energy = energy;
 		this.color = new Color(35, 55, 225);
 		this.radius = 4.0;
-
+		this.resistance = 3.0;
 	}
 
 	public boolean stepLife() {
@@ -69,6 +70,10 @@ public class OrganicNode extends Node {
 
 	public double getMaxEnergy() {
 		return maxEnergy;
+	}
+
+	public double getResistance() {
+		return resistance;
 	}
 
 	@Override

@@ -21,7 +21,7 @@ public class ReproductiveNode extends OrganicNode {
 	private static final double DIGIT_DELETE_CHANCE = 0.00015;
 	private static final double DIGIT_TRANSFORM_CHANCE = 0.00025;
 
-	private static final String[] NODE_TYPES = {"nod", "jit", "rot", "eat", "pre"};
+	private static final String[] NODE_TYPES = {"nod", "jit", "rot", "eat", "pre", "sto"};
 
 	private final List<String> code;
 	private final List<String> permCode;
@@ -44,17 +44,19 @@ public class ReproductiveNode extends OrganicNode {
 		this.radius = 4.0;
 		this.mass = 5.0;
 		this.color = new Color(255, 255, 255);
+		this.resistance = 0.75;
 	}
 
 	@Override
 	public boolean stepLife() {
 		boolean isAlive = super.stepLife();
 		if (isAlive && code.size() > 0 && getEnergy() >= 1.667) {
-			createNode(code.remove(code.size()-1));
+			String instruction = code.remove(code.size()-1);
+			createNode(instruction);
 		}
-		if (isAlive && code.size() == 0 && getEnergy() >= 2) {
+		if (isSolid() && isAlive && code.size() == 0 && getEnergy() >= 2) {
 			reproduce();
-			setEnergy(0);
+			setEnergy(-1);
 		}
 		return isAlive;
 	}
@@ -71,23 +73,17 @@ public class ReproductiveNode extends OrganicNode {
 			case "rot" -> new RotationalNode();
 			case "eat" -> new EatingNode();
 			case "pre" -> new PredationNode(this);
+			case "sto" -> new StorageNode();
 			default -> new OrganicNode();
 		};
 
 		node.setEnergy(0.0);
-		if (root == 0) {
-			node.setX(getX()+getRadius());
-			node.setY(getY()+getRadius());
-			connect(node);
-		} else {
-			node.setX(organism.get(root).getX()+getRadius());
-			node.setY(organism.get(root).getY()+getRadius());
-		}
+		node.setX(organism.get(root).getX()+getRadius()*2);
+		node.setY(organism.get(root).getY()+getRadius()*2);
 		for (String num : nums) {
 			int idx = Integer.parseInt(num);
-			if (idx < organism.size()) {
+			if (idx < organism.size())
 				organism.get(idx).connect(node);
-			}
 		}
 		organism.add(node);
 		sim.addOrganicNode(node);
@@ -95,18 +91,10 @@ public class ReproductiveNode extends OrganicNode {
 
 	private void reproduce() {
 		children++;
-		ReproductiveNode child = new ReproductiveNode(null, getX(), getY(), 2.5, shuffleCode(permCode, children), sim);
+		ReproductiveNode child = new ReproductiveNode(null, getX(), getY(), 2.0, shuffleCode(permCode, children), sim);
 		sim.addOrganicNode(child);
 		child.setvX(2*(Math.random() - 0.5));
 		child.setvY(2*(Math.random() - 0.5));
-	}
-
-	public static void main(String[] args) {
-		for (int i = 0; i < 1000; i++) {
-			List<String> x = shuffleCode(new ArrayList<>(Arrays.asList("nod 0", "nod 0 1")), 0);
-			if (!x.equals(new ArrayList<>(Arrays.asList("nod 0", "nod 0 1"))))
-				System.out.println(x);
-		}
 	}
 
 	private static List<String> shuffleCode(List<String> permCode, int children){
@@ -145,12 +133,14 @@ public class ReproductiveNode extends OrganicNode {
 					num = (int) (Math.random() * i);
 				if (j == removedIdx)
 					continue;
-				newNums.append(num-frameShift[num]).append(" ");
+				if (num < frameShift.length)
+					newNums.append(num-frameShift[num]).append(" ");
 			}
 
 			if (genError + DIGIT_INSERT_CHANCE > Math.random()) {
 				int num = (int)(Math.random() * i);
-				newNums.append(num);
+				if (num < frameShift.length)
+					newNums.append(num-frameShift[num]);
 			}
 
 			newCode.add(newInstruction + " " + newNums.toString().strip());
@@ -169,5 +159,13 @@ public class ReproductiveNode extends OrganicNode {
 
 	public List<OrganicNode> getOrganism() {
 		return organism;
+	}
+
+	public List<String> getCode() {
+		return code;
+	}
+
+	public List<String> getPermCode() {
+		return permCode;
 	}
 }

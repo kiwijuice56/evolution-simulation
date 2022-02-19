@@ -23,9 +23,10 @@ public class PredationNode extends OrganicNode {
 	@Override
 	public void collidedWith(Circle other) {
 		super.collidedWith(other);
-		if (isSolid && other instanceof OrganicNode otherOrganic && !root.getOrganism().contains(other)) {
-			setEnergy(getEnergy() + otherOrganic.getEnergy() / 2);
-			otherOrganic.setEnergy(otherOrganic.getEnergy() / 2);
+		if (isSolid && other.isSolid() && other instanceof OrganicNode otherOrganic && !root.getOrganism().contains(other)) {
+			double stolenEnergy = otherOrganic.getEnergy() * (1.0 / otherOrganic.getResistance());
+			setEnergy(getEnergy() + stolenEnergy/10);
+			otherOrganic.setEnergy(otherOrganic.getEnergy() - stolenEnergy);
 		}
 	}
 }

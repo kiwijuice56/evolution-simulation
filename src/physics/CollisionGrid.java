@@ -57,11 +57,16 @@ public class CollisionGrid {
 							continue;
 						// Move this circle out of the collider
 						double distance = c.distanceTo(o);
-						double depth = (c.getRadius() + o.getRadius()) - distance;
-						double xDir = (c.getX() - o.getX()) / distance;
-						double yDir = (c.getY() - o.getY()) / distance;
-						c.setX(c.getX() + xDir * depth);
-						c.setY(c.getY() + yDir * depth);
+						if (distance == 0) {
+							return;
+						} else {
+							double depth = (c.getRadius() + o.getRadius()) - distance;
+							double xDir = (c.getX() - o.getX()) / distance;
+							double yDir = (c.getY() - o.getY()) / distance;
+							c.setX(c.getX() + xDir * depth);
+							c.setY(c.getY() + yDir * depth);
+						}
+
 
 						// Calculate new velocities using the momentum of each circle
 						double cFinalvX =

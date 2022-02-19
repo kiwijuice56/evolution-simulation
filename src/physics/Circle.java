@@ -10,7 +10,7 @@ public class Circle {
 	private double vX, vY;
 	protected double radius;
 	protected double mass;
-	protected boolean isSolid = true;
+	protected boolean isSolid = false;
 	protected Color color;
 	private boolean deletable = false;
 
@@ -72,6 +72,7 @@ public class Circle {
 	public void isUndetectable() {
 		isSolid = true;
 	}
+
 	/* * * * * * * * * * * * * * * * * * * * * */
 	public double getX() {
 		return x;
