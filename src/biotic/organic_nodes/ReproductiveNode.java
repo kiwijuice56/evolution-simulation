@@ -76,12 +76,12 @@ public class ReproductiveNode extends OrganicNode {
 
 		node.setEnergy(0.0);
 		if (root == 0) {
-			node.setX(getX());
-			node.setY(getY());
+			node.setX(getX()+getRadius());
+			node.setY(getY()+getRadius());
 			connect(node);
 		} else {
-			node.setX(organism.get(root).getX());
-			node.setY(organism.get(root).getY());
+			node.setX(organism.get(root).getX()+getRadius());
+			node.setY(organism.get(root).getY()+getRadius());
 		}
 		for (String num : nums) {
 			int idx = Integer.parseInt(num);

@@ -21,14 +21,8 @@ public class Simulation {
 		toAdd = new HashSet<>();
 		foodProducers = new HashSet<>();
 
-		addOrganicNode(new ReproductiveNode(null, 200, 200, 4.0,
-				new ArrayList<>(Arrays.asList("eat 0", "rot 0", "eat 1", "eat 1 3", "eat 1 3 4", "rot 5")), this));
-		addOrganicNode(new ReproductiveNode(null, 200, 500, 4.0,
-				new ArrayList<>(Arrays.asList("eat 0", "rot 0", "nod 2", "nod 3", "nod 4", "nod 5", "nod 6", "nod 7", "nod 8", "nod 9", "rot 10")), this));
-		addOrganicNode(new ReproductiveNode(null, 600, 600, 3.0,
-				new ArrayList<>(Arrays.asList("eat 0", "jit 0")), this));
-		addOrganicNode(new ReproductiveNode(null, 300, 600, 3.0,
-				new ArrayList<>(Arrays.asList("eat 0", "rot 1", "nod 2", "pre 3")), this));
+		addOrganicNode(new ReproductiveNode(null, 300, 300, 3.0,
+				new ArrayList<>(Arrays.asList("eat 0", "rot 0", "nod 0", "nod 3", "nod 4", "nod 5", "nod 6", "jit 7")), this));
 		initializeFood(grid);
 	}
 
@@ -42,6 +36,7 @@ public class Simulation {
 		}
 
 		organicNodes.addAll(toAdd);
+		toAdd.clear();
 		organicNodes.removeIf(OrganicNode::isDeletable);
 	}
 
@@ -67,8 +62,8 @@ public class Simulation {
 			foodProducers.add(f);
 		}
 
-		for (int i = 0; i < 30; i++) {
-			for (int j = 0; j < 50; j++) {
+		for (int i = 0; i < 15; i++) {
+			for (int j = 0; j < 15; j++) {
 				Food f = new Food((j*24) + (15*Math.random()) - 7.5, (i*24)  + (10*Math.random()) - 5);
 				boolean isColliding = false;
 				for (OrganicNode o: organicNodes)
