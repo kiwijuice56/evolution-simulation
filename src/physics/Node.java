@@ -1,6 +1,7 @@
 package physics;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -8,9 +9,10 @@ import java.util.HashSet;
  * Allows for connections with other nodes to bound position
  */
 public class Node extends Circle {
-	private final Set<Node> connections;
-	private int maxLinkLength = 16;
 	private final static double MAX_DEFORMATION = 1.0;
+	private final static double MAX_LINK_LENGTH = 19.0;
+
+	private final Set<Node> connections;
 
  	public Node() {
  		this(null, 0, 0);
@@ -21,9 +23,9 @@ public class Node extends Circle {
 		connections = new HashSet<>();
 		if (linkedNode != null)
 	   		connect(linkedNode);
-		isSolid = false;
 	}
 
+	@Override
 	public void draw(Graphics g) {
 		super.draw(g);
 		g.setColor(Color.GRAY);
@@ -43,8 +45,8 @@ public class Node extends Circle {
 	public void setX(double x) {
 		super.setX(x);
 		for (Node n : connections) {
-			if (distanceTo(n) > n.getMaxLinkLength()) {
-				double deform = Math.min(MAX_DEFORMATION, (distanceTo(n) - n.getMaxLinkLength())/2);
+			if (distanceTo(n) > MAX_LINK_LENGTH) {
+				double deform = Math.min(MAX_DEFORMATION, (distanceTo(n) - MAX_LINK_LENGTH)/2);
 				double dir = -Math.signum(getX() - n.getX());
 				if (dir == 0)
 					return;
@@ -62,8 +64,8 @@ public class Node extends Circle {
 	public void setY(double y) {
 		super.setY(y);
 		for (Node n : connections) {
-			if (distanceTo(n) > n.getMaxLinkLength()){
-				double deform = Math.min(MAX_DEFORMATION, (distanceTo(n) - n.getMaxLinkLength())/2);
+			if (distanceTo(n) > MAX_LINK_LENGTH){
+				double deform = Math.min(MAX_DEFORMATION, (distanceTo(n) - MAX_LINK_LENGTH)/2);
 				double dir = -Math.signum(getY() - n.getY());
 				setvY(getvY() + dir * deform/getMass());
 				super.setY(getY() + deform*dir);
@@ -77,16 +79,10 @@ public class Node extends Circle {
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * * */
+
 	public Set<Node> getConnections() {
 		return connections;
 	}
 
-	public int getMaxLinkLength() {
-		return maxLinkLength;
-	}
-
-	public void setMaxLinkLength(int maxLinkLength) {
-		this.maxLinkLength = maxLinkLength;
-	}
 	/* * * * * * * * * * * * * * * * * * * * * */
 }

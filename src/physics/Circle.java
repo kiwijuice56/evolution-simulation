@@ -10,13 +10,10 @@ public class Circle {
 	private double vX, vY;
 	protected double radius;
 	protected double mass;
-	protected boolean isSolid = false;
 	protected Color color;
-	private boolean deletable = false;
 
-	public Circle() {
-		this(0, 0);
-	}
+	protected boolean solid = false;
+	private boolean deletable = false;
 
 	public Circle(double x, double y) {
 		this.x = x;
@@ -34,14 +31,6 @@ public class Circle {
 	 */
 	public boolean isColliding(Circle other) {
 		return distanceTo(other) < (other.getRadius() + getRadius());
-	}
-
-	public void collidedWith(Circle other) {
-
-	}
-
-	public void delete() {
-		deletable = true;
 	}
 
 	/**
@@ -62,16 +51,17 @@ public class Circle {
 				(int)Math.round(getRadius()*2));
 	}
 
-	public void collisionStep() {
-
-	}
+	/**
+	 * Called every collision step from the CollisionGrid
+	 */
+	public void collisionStep() { }
 
 	/**
-	 * Called when this circle did not collide with anything during a collision step
+	 * Called every time this circle collides with another
+	 * @param other the circle collided with
 	 */
-	public void isUndetectable() {
-		isSolid = true;
-	}
+	public void collidedWith(Circle other) { }
+
 
 	/* * * * * * * * * * * * * * * * * * * * * */
 	public double getX() {
@@ -118,12 +108,20 @@ public class Circle {
 		return color;
 	}
 
+	public void setDeletable(boolean deletable) {
+		this.deletable = deletable;
+	}
+
 	public boolean isDeletable() {
 		return deletable;
 	}
 
 	public boolean isSolid() {
-		return isSolid;
+		return solid;
+	}
+
+	public void setSolid(boolean solid) {
+		this.solid = solid;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * * */

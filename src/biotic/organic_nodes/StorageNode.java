@@ -2,10 +2,10 @@ package biotic.organic_nodes;
 
 import physics.Node;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class StorageNode extends OrganicNode {
-	private final static double MAX_RADIUS = 7.9;
+	private final static double MAX_RADIUS = 12.0;
 
 	public StorageNode() {
 		this(null, 0, 0, 1.0);
@@ -15,13 +15,17 @@ public class StorageNode extends OrganicNode {
 		super(linkedNode, x, y, energy);
 		this.color = new Color(255,200,0);
 		this.radius = getRadius();
-		this.maxEnergy = 3.0;
-		this.hunger = 0.00005;
-		this.resistance = 0.75;
+		this.maxEnergy = 6.0;
+		this.hunger = 0.000005;
+		this.resistance = 1.25;
 	}
 
+	/**
+	 * Multiplies radius by the amount of energy
+	 * @return radius * energy/maxEnergy
+	 */
 	@Override
 	public double getRadius() {
-		return Math.max(1.0, (getEnergy() / getMaxEnergy()) * MAX_RADIUS);
+		return Math.max(2.0, (getEnergy() / getMaxEnergy()) * MAX_RADIUS);
 	}
 }

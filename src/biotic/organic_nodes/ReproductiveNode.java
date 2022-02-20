@@ -5,12 +5,15 @@ import simulation.Simulation;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class ReproductiveNode extends OrganicNode {
 	private final Simulation sim;
+
+	private static final double ENERGY_TO_GROW = 1.6;
+	private static final double ENERGY_TO_REPRODUCE = 2.0;
+	private static final double REPRODUCTION_COST_PER_CHILD = 0.5;
 
 	private static final double GENERATIONAL_ERROR_GROWTH = 0.005;
 	private static final double MAX_GENERATIONAL_ERROR = 0.5;
@@ -48,15 +51,14 @@ public class ReproductiveNode extends OrganicNode {
 	}
 
 	@Override
-	public boolean stepLife() {
-		boolean isAlive = super.stepLife();
-		if (isAlive && code.size() > 0 && getEnergy() >= 1.667) {
+	public boolean lifeStep() {
+		boolean isAlive = super.lifeStep();
+		if (isAlive && code.size() > 0 && getEnergy() >= ENERGY_TO_GROW) {
 			String instruction = code.remove(code.size()-1);
 			createNode(instruction);
-		}
-		if (isSolid() && isAlive && code.size() == 0 && getEnergy() >= 2) {
+		} else if (isSolid() && isAlive && code.size() == 0 && getEnergy() >= ENERGY_TO_REPRODUCE + REPRODUCTION_COST_PER_CHILD * children) {
 			reproduce();
-			setEnergy(-1);
+			setEnergy(0);
 		}
 		return isAlive;
 	}

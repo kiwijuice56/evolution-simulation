@@ -1,6 +1,5 @@
 package physics;
 
-import java.awt.Color;
 import java.util.*;
 
 public class CollisionGrid {
@@ -67,7 +66,6 @@ public class CollisionGrid {
 							c.setY(c.getY() + yDir * depth);
 						}
 
-
 						// Calculate new velocities using the momentum of each circle
 						double cFinalvX =
 								(c.getvX() * (c.getMass() - o.getMass())) / (o.getMass() + c.getMass()) +
@@ -95,7 +93,7 @@ public class CollisionGrid {
 				}
 			}
 			if (isUndetected)
-				c.isUndetectable();
+				c.setSolid(true);
 			for (Set<Circle> cell : getGridCells(c))
 				cell.add(c);
 

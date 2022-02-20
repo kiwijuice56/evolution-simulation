@@ -1,3 +1,5 @@
+package main;
+
 import graphic_interface.ApplicationFrame;
 import physics.CollisionGrid;
 import simulation.Simulation;
@@ -19,10 +21,12 @@ public class Main {
 
 			grid.stepCollision();
 			sim.stepSimulation();
-			frame.repaint();
+			if (frame.isGraphicsActive())
+				frame.repaint();
 
 			long end = System.nanoTime();
-			TimeUnit.NANOSECONDS.sleep(Math.max(0, MIN_WAIT_PER_FRAME - (end - start)));
+			if (frame.isLimitedFPS())
+				TimeUnit.NANOSECONDS.sleep(Math.max(0, MIN_WAIT_PER_FRAME - (end - start)));
 			if (iterCount % 100 == 0) {
 				iterCount = 0;
 				frame.updateFPS(1/((System.nanoTime()-start)*.000000001));
