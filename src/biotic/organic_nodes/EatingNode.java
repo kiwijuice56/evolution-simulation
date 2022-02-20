@@ -15,7 +15,7 @@ public class EatingNode extends OrganicNode {
 
 	public EatingNode(Node linkedNode, double x, double y, double energy) {
 		super(linkedNode, x, y, energy);
-		this.radius = 7.0;
+		this.radius = 6.0;
 		this.mass = 3.0;
 		this.maxEnergy = 3.0;
 		this.hunger = 0.0005;

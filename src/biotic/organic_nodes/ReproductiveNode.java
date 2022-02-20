@@ -21,7 +21,7 @@ public class ReproductiveNode extends OrganicNode {
 	private static final double DIGIT_DELETE_CHANCE = 0.00015;
 	private static final double DIGIT_TRANSFORM_CHANCE = 0.00025;
 
-	private static final String[] NODE_TYPES = {"nod", "jit", "rot", "eat", "pre", "sto"};
+	public static final String[] NODE_TYPES = {"nod", "jit", "rot", "eat", "pre", "sto"};
 
 	private final List<String> code;
 	private final List<String> permCode;

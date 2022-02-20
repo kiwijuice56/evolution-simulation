@@ -11,8 +11,8 @@ public class Main {
 
 	public static void main(String[] args) throws InterruptedException {
 		CollisionGrid grid = new CollisionGrid(WIDTH, HEIGHT, 20);
-		ApplicationFrame frame = new ApplicationFrame(grid);
 		Simulation sim = new Simulation(grid);
+		ApplicationFrame frame = new ApplicationFrame(grid, sim);
 		while (true) {
 			long start = System.currentTimeMillis();
 

@@ -37,22 +37,20 @@ public class Simulation {
 		}
 
 		organicNodes.addAll(toAdd);
+		for (OrganicNode node : toAdd)
+			grid.addCircle(node);
 		toAdd.clear();
 		organicNodes.removeIf(OrganicNode::isDeletable);
 	}
 
-	public boolean addFood(Food f) {
-		if (toAdd.contains(f))
-			return false;
+	public void addFood(Food f) {
 		grid.addCircle(f);
-		return true;
 	}
 
 	public boolean addOrganicNode(OrganicNode node) {
 		if (toAdd.contains(node))
 			return false;
 		toAdd.add(node);
-		grid.addCircle(node);
 		return true;
 	}
 
