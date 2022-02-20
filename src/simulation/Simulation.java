@@ -22,10 +22,8 @@ public class Simulation {
 		foodProducers = new HashSet<>();
 
 		ReproductiveNode x = new ReproductiveNode(null, 300, 300, 5.0,
-				new ArrayList<>(Arrays.asList("eat 0", "jit 1", "rot 2", "rot 2", "nod 3", "nod 3", "nod 3", "nod 4", "nod 4", "nod 4", "sto 2", "pre 11")), this);
+				new ArrayList<>(Arrays.asList("eat 0", "jit 1", "rot 2", "rot 2", "nod 3", "nod 3 5", "nod 3 6", "nod 4", "nod 4 8", "nod 4 9")), this);
 		addOrganicNode(x);
-		System.out.println(x.getCode());
-		System.out.println(x.getPermCode());
 		initializeFood(grid);
 	}
 

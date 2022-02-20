@@ -32,12 +32,14 @@ through code containing lines of nodes to create and which nodes to connect to.
 ### Node Table
 | Tag      | Description | Color |
 | ----------- | ----------- | -----------|
-| nod      | Structural, no effect       | Dark violet
-| eat   | Consume food for energy        | Teal
-| rot   | Rotate randomly        | Pink
-| jit   | Jitter randomly        | Lavender 
-| pre   | Siphon energy from other organisms        | Red
-| rep (cannot be coded) | Organize growing and duplication | Grey
+| `nod`      | Structural, no effect       | Dark violet
+| `eat`   | Consume food for energy        | Teal
+| `rot`   | Rotate randomly        | Pink
+| `jit`   | Jitter randomly        | Lavender 
+| `pre`   | Siphon energy from other organisms        | Red
+| `sto` | Radius changes with energy | Brown
+| `rep` (cannot be coded) | Organize growing and duplication | Grey
+
 
 ### Example Code
 ```
@@ -58,10 +60,21 @@ jit 7
 Also, multiple node connections can be made in one line.
 ```
 eat 0
-eat 0 1
-eat 0 1 2
-jit 0 2
+jit 1
+rot 2
+rot 2
+nod 3
+nod 3 5
+nod 3 6
+nod 4
+nod 4 8
+nod 4 9
 ```
+<p align="center">
+  <img src="img/screenshot6.png" alt="image organism created from code example 2"/>
+</p>
+<p align = "center"><b>Organism created from code example</b></p>
+
 When an organism duplicates, its code can contain errors through
 swaps, deletions, and insertions. Over time, many organism
 types can be created.
