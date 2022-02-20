@@ -9,6 +9,7 @@ This program simulates emergence and natural selection in biological systems usi
 
 ## Organism Mechanics
 Organisms are represented with nodes in a graph, each color representing a specific node element.
+Each line represents a bidirectional connection in the graph organism.
 
 <p align="center">
   <img src="img/screenshot2.png" alt="image of organism"/>
@@ -17,27 +18,36 @@ Organisms are represented with nodes in a graph, each color representing a speci
 
 Each node has an energy property (represented by brightness) that must
 be kept above zero to prevent the organism from starving. This can
-be achieved through consuming food particles or predation.
+be achieved through consuming food particles or predation. Nodes lose energy over time and viruses
+can deplete energy more quickly.
 
 <p align="center">
   <img src="img/screenshot3.png" alt="image of food"/>
 </p>
 <p align = "center"><b>Food producers and particles</b></p>
 
+<p align="center">
+  <img src="img/screenshot7.png" alt="image of viruses"/>
+</p>
+<p align = "center"><b>Virus producers and particles</b></p>
 
-If an organism has enough energy, it can duplicate its reproductive node 
-which will then grow into fully a developed organism. Organisms have "DNA" which is represented
-through code containing lines of nodes to create and which nodes to connect to.
+Organisms have "DNA" which is represented
+through code containing lines of nodes to create and which nodes to connect to. You can create
+your own organisms through the program's code editor.
+As the organism gains energy, it will read through its code and add nodes with their
+respective connections.
+If an organism has enough energy, it can duplicate its reproductive node and code
+which will then grow into fully a developed organism.
 
 ### Node Table
 | Tag      | Description | Color |
 | ----------- | ----------- | -----------|
-| `nod`      | Structural, no effect       | Dark violet
-| `eat`   | Consume food for energy        | Teal
+| `nod`      | Structural, strong virus resistance       | Dark violet
+| `eat`   | Consume food for energy, low resistance        | Teal
 | `rot`   | Rotate randomly        | Pink
 | `jit`   | Jitter randomly        | Lavender 
 | `pre`   | Siphon energy from other organisms        | Red
-| `sto` | Radius changes with energy | Brown
+| `sto` | Radius changes with energy, high max energy | Yellow
 | `rep` (cannot be coded) | Organize growing and duplication | Grey
 
 
