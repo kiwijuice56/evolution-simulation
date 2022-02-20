@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="evolution-simulation:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/evolution_simulation_jar</output-path>
+    <root id="archive" name="evolution-simulation.jar">
+      <element id="module-output" name="evolution-simulation" />
+    </root>
+  </artifact>
+</component>

@@ -5,7 +5,7 @@ import simulation.Simulation;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
-	private static final int MIN_MILLIS_PER_FRAME = 2;
+	private static final long MIN_WAIT_PER_FRAME = 2000000;
 	public static final int WIDTH = 1200;
 	public static final int HEIGHT = 700;
 
@@ -13,16 +13,23 @@ public class Main {
 		CollisionGrid grid = new CollisionGrid(WIDTH, HEIGHT, 20);
 		Simulation sim = new Simulation(grid);
 		ApplicationFrame frame = new ApplicationFrame(grid, sim);
+		int iterCount = 0;
 		while (true) {
-			long start = System.currentTimeMillis();
+			long start = System.nanoTime();
 
 			grid.stepCollision();
 			sim.stepSimulation();
 			frame.repaint();
 
-			long end = System.currentTimeMillis();
-			TimeUnit.MILLISECONDS.sleep(Math.max(0, MIN_MILLIS_PER_FRAME - (end - start)));
-			frame.updateFPS(1/((System.currentTimeMillis()-start) / 1000.0));
+			long end = System.nanoTime();
+			TimeUnit.NANOSECONDS.sleep(Math.max(0, MIN_WAIT_PER_FRAME - (end - start)));
+			if (iterCount % 100 == 0) {
+				iterCount = 0;
+				frame.updateFPS(1/((System.nanoTime()-start)*.000000001));
+				frame.updateNodes(sim.getNodeCount());
+				frame.updateCircles(grid.getCircles().size());
+			}
+			iterCount++;
 		}
 	}
 }

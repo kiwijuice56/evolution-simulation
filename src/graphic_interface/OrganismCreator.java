@@ -5,6 +5,8 @@ import physics.CollisionGrid;
 import simulation.Simulation;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,31 +28,65 @@ public class OrganismCreator extends JPanel implements ActionListener {
 		this.sim = sim;
 		this.grid = grid;
 
-		JPanel codeEditor = new JPanel();
-		codeEditor.setLayout(new BoxLayout(codeEditor, BoxLayout.Y_AXIS));
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setBackground(new Color(42, 42, 50));
 
 		text = new JTextArea(28, 16);
 		text.setFont(new Font("Consolas", Font.PLAIN, 16));
-		codeEditor.add(text);
+		text.setEditable(true);
+		text.setBackground(new Color(9, 8, 13));
+		text.setForeground(new Color(200, 203, 207));
+		text.setCaretColor(new Color(200, 203, 207));
+
+		JScrollPane codeEditor = new JScrollPane(text);
+		codeEditor.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		codeEditor.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		add(codeEditor);
+
+		LineNumberingTextArea lineNumberingTextArea = new LineNumberingTextArea(text);
+		codeEditor.setRowHeaderView(lineNumberingTextArea);
+
+		text.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void insertUpdate(DocumentEvent documentEvent) {
+				lineNumberingTextArea.updateLineNumbers();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent documentEvent) {
+				lineNumberingTextArea.updateLineNumbers();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent documentEvent) {
+				lineNumberingTextArea.updateLineNumbers();
+			}
+		});
+		text.setText("nod 0");
 
 		JPanel textButtonContainer = new JPanel();
 		textButtonContainer.setLayout(new BoxLayout(textButtonContainer, BoxLayout.X_AXIS));
 
 		JButton add = new JButton("Add Organism");
+		add.setBackground(new Color(60,60,72));
+		add.setForeground(new Color(200, 203, 207));
+		add.setFocusPainted(false);
 		add.addActionListener(this);
 		textButtonContainer.add(add);
 
 		JButton save = new JButton("Save As");
+		save.setBackground(new Color(60,60,72));
+		save.setForeground(new Color(200, 203, 207));
+		save.setFocusPainted(false);
 		save.addActionListener(this);
 		textButtonContainer.add(save);
 
-		codeEditor.add(textButtonContainer);
+		add(textButtonContainer);
 
 		errorLabel = new JLabel("Type an organism code");
+		errorLabel.setForeground(new Color(200, 203, 207));
 		errorLabel.setAlignmentX(CENTER_ALIGNMENT);
-		codeEditor.add(errorLabel);
-
-		add(codeEditor);
+		add(errorLabel);
 	}
 
 	@Override
