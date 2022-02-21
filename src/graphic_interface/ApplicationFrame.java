@@ -6,18 +6,17 @@ import simulation.Simulation;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * Contains all GUI
  */
 public class ApplicationFrame extends JFrame  {
-	private final JLabel fpsLabel;
-	private final JLabel nodeLabel;
-	private final JLabel circleLabel;
+	private JLabel fpsLabel;
+	private JLabel nodeLabel;
+	private JLabel circleLabel;
 	private boolean graphicsActive = true;
 	private boolean limitedFPS = true;
+	private boolean paused = false;
 
 	public ApplicationFrame(CollisionGrid grid, Simulation sim) {
 		setTitle("Evolution simulation");
@@ -28,26 +27,47 @@ public class ApplicationFrame extends JFrame  {
 		GridPanel panel = new GridPanel(grid);
 		getContentPane().add(panel, BorderLayout.CENTER);
 
-		JPanel statisticPanel = new JPanel();
-		statisticPanel.setLayout(new BoxLayout(statisticPanel, BoxLayout.X_AXIS));
-		statisticPanel.setBackground(new Color(42, 42, 50));
+		getContentPane().add(createBottomPanel(), BorderLayout.SOUTH);
 
-		fpsLabel = new JLabel("fps: 0");
+		getContentPane().add(new OrganismCreator(sim, grid), BorderLayout.EAST);
+
+		setSize(1200, 700);
+		setVisible(true);
+	}
+
+	private JPanel createBottomPanel() {
+		JPanel bottomPanel = new JPanel();
+		bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.X_AXIS));
+		bottomPanel.setBackground(new Color(42, 42, 50));
+
+		fpsLabel = new JLabel(" fps: 0");
 		fpsLabel.setForeground(new Color(200, 203, 207));
 		fpsLabel.setBorder(new EmptyBorder(0,0,0,16));
-		statisticPanel.add(fpsLabel);
+		bottomPanel.add(fpsLabel);
 
 		nodeLabel = new JLabel("nodes:      0");
 		nodeLabel.setForeground(new Color(200, 203, 207));
 		nodeLabel.setBorder(new EmptyBorder(0,0,0,16));
-		statisticPanel.add(nodeLabel);
+		bottomPanel.add(nodeLabel);
 
 		circleLabel = new JLabel("circles:      0");
 		circleLabel.setForeground(new Color(200, 203, 207));
 		circleLabel.setBorder(new EmptyBorder(0,0,0,16));
-		statisticPanel.add(circleLabel);
+		bottomPanel.add(circleLabel);
 
-		JButton graphicsToggle = new JButton("Turn Graphics Off");
+		DarkJButton pauseButton = new DarkJButton("Pause");
+		pauseButton.addActionListener(e -> {
+			if (e.getActionCommand().equals("Pause")) {
+				ApplicationFrame.this.setPaused(true);
+				pauseButton.setText("Unpause");
+			} else if (e.getActionCommand().equals("Unpause")) {
+				ApplicationFrame.this.setPaused(false);
+				pauseButton.setText("Pause");
+			}
+		});
+		bottomPanel.add(pauseButton);
+
+		DarkJButton graphicsToggle = new DarkJButton("Turn Graphics Off");
 		graphicsToggle.addActionListener(e -> {
 			if (e.getActionCommand().equals("Turn Graphics Off")) {
 				ApplicationFrame.this.setGraphicsActive(false);
@@ -57,12 +77,9 @@ public class ApplicationFrame extends JFrame  {
 				graphicsToggle.setText("Turn Graphics Off");
 			}
 		});
-		graphicsToggle.setBackground(new Color(60,60,72));
-		graphicsToggle.setForeground(new Color(200, 203, 207));
-		graphicsToggle.setFocusPainted(false);
-		statisticPanel.add(graphicsToggle);
+		bottomPanel.add(graphicsToggle);
 
-		JButton fpsToggle = new JButton("Unlimited FPS");
+		DarkJButton fpsToggle = new DarkJButton("Unlimited FPS");
 		fpsToggle.addActionListener(e -> {
 			if (e.getActionCommand().equals("Unlimited FPS")) {
 				ApplicationFrame.this.setLimitedFPS(false);
@@ -72,23 +89,14 @@ public class ApplicationFrame extends JFrame  {
 				fpsToggle.setText("Unlimited FPS");
 			}
 		});
-		fpsToggle.setBackground(new Color(60,60,72));
-		fpsToggle.setForeground(new Color(200, 203, 207));
-		fpsToggle.setFocusPainted(false);
-		statisticPanel.add(fpsToggle);
-
-
-		getContentPane().add(statisticPanel, BorderLayout.SOUTH);
-
-		OrganismCreator organismCreator = new OrganismCreator(sim, grid);
-		getContentPane().add(organismCreator, BorderLayout.EAST);
-
-		setSize(grid.getWidth(), grid.getHeight());
-		setVisible(true);
+		bottomPanel.add(fpsToggle);
+		return bottomPanel;
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * * */
+
 	public void updateFPS(double fps) {
-		fpsLabel.setText(String.format("fps: %05d", Math.round(fps)));
+		fpsLabel.setText(String.format(" fps: %05d", Math.round(fps)));
 	}
 
 	public void updateNodes(int nodes) {
@@ -114,4 +122,14 @@ public class ApplicationFrame extends JFrame  {
 	public void setLimitedFPS(boolean limitedFPS) {
 		this.limitedFPS = limitedFPS;
 	}
+
+	public boolean isPaused() {
+		return paused;
+	}
+
+	public void setPaused(boolean paused) {
+		this.paused = paused;
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * * */
 }

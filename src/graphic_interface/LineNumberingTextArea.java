@@ -7,10 +7,10 @@ import java.awt.*;
 /**
  * Adapted from user bullywiiplaza's post: https://stackoverflow.com/questions/18768649/java-code-to-display-lines-number-in-jtextarea
  */
-public class LineNumberingTextArea extends JTextArea {
-	private final JTextArea textArea;
+public class LineNumberingTextArea extends JTextPane {
+	private final JTextPane textArea;
 
-	public LineNumberingTextArea(JTextArea textArea) {
+	public LineNumberingTextArea(JTextPane textArea) {
 		this.textArea = textArea;
 		setBackground(new Color(42, 42, 50));
 		setForeground(new Color(125, 125, 130));

@@ -50,7 +50,7 @@ which will then grow into fully a developed organism.
 | `fol` | Moves towards other nodes | ![salmon](img/salmon.png)
 | `pre` | Siphon energy from other organisms | ![red](img/red.png)
 | `sto` | Radius changes with energy, high max energy | ![yellow](img/yellow.png)
-| `rep` (cannot be coded) | Organize growing and duplication | ![white](img/white.png)
+| `rep` | (cannot be coded) Organize growing and duplication | ![white](img/white.png)
 
 ### Example Code
 ```

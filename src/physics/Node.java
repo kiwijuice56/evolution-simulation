@@ -26,13 +26,13 @@ public class Node extends Circle {
 	}
 
 	@Override
-	public void draw(Graphics g) {
-		super.draw(g);
+	public void draw(Graphics g, int x, int y) {
+		super.draw(g, x, y);
 		g.setColor(Color.GRAY);
 		for (Node n : connections) {
 			g.drawLine(
-					(int)Math.round(getX()), (int)Math.round(getY()),
-					(int)Math.round(n.getX()), (int)Math.round(n.getY()));
+					(int)Math.round(getX()) + x, (int)Math.round(getY()) + y,
+					(int)Math.round(n.getX()) + x, (int)Math.round(n.getY()) + y);
 		}
 
 	}

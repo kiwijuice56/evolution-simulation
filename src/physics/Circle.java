@@ -42,11 +42,11 @@ public class Circle {
 		return Math.sqrt(Math.pow(other.getX() - getX(), 2) + Math.pow(other.getY() - getY(), 2));
 	}
 
-	public void draw(Graphics g) {
+	public void draw(Graphics g, int x, int y) {
 		g.setColor(getColor());
 		g.fillOval(
-				(int)Math.round(getX()-getRadius()),
-				(int)Math.round(getY()-getRadius()),
+				(int)Math.round(getX()-getRadius()) + x,
+				(int)Math.round(getY()-getRadius()) + y,
 				(int)Math.round(getRadius()*2),
 				(int)Math.round(getRadius()*2));
 	}

@@ -23,9 +23,6 @@ public class Simulation {
 		organicNodes = new HashSet<>();
 		toAdd = new HashSet<>();
 		producers = new HashSet<>();
-
-		//ReproductiveNode x = new ReproductiveNode(null, 300, 300, 5.0,
-		//		new ArrayList<>(Arrays.asList("eat 0", "jit 1", "sto 1", "rot 2", "nod 3", "nod 3 5", "nod 3 6", "nod 4", "nod 4 8", "nod 4 9")), this);
 		initializeFood(grid);
 	}
 

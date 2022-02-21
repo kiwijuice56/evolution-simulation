@@ -14,6 +14,7 @@ public class ReproductiveNode extends OrganicNode {
 	private final CollisionGrid grid;
 
 	private static final double ENERGY_TO_GROW = 1.6;
+	private static final double GROWTH_ENERGY_MULTIPLIER = 0.65;
 	private static final double ENERGY_TO_REPRODUCE = 2.0;
 	private static final double REPRODUCTION_COST_PER_CHILD = 0.5;
 	private static final double DISCOUNT_PER_GROWTH = 0.75;
@@ -60,6 +61,7 @@ public class ReproductiveNode extends OrganicNode {
 		if (isAlive && code.size() > 0 && getEnergy() >= ENERGY_TO_GROW) {
 			String instruction = code.remove(code.size()-1);
 			createNode(instruction);
+			setEnergy(getEnergy() * GROWTH_ENERGY_MULTIPLIER);
 			hunger *= DISCOUNT_PER_GROWTH;
 		} else if (isSolid() && isAlive && code.size() == 0 && getEnergy() >= ENERGY_TO_REPRODUCE + REPRODUCTION_COST_PER_CHILD * children) {
 			reproduce();

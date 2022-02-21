@@ -8,8 +8,8 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
 	private static final long MIN_WAIT_PER_FRAME = 2000000;
-	public static final int WIDTH = 1200;
-	public static final int HEIGHT = 700;
+	public static final int WIDTH = 2400;
+	public static final int HEIGHT = 1800;
 
 	public static void main(String[] args) throws InterruptedException {
 		CollisionGrid grid = new CollisionGrid(WIDTH, HEIGHT, 20);
@@ -19,8 +19,10 @@ public class Main {
 		while (true) {
 			long start = System.nanoTime();
 
-			grid.stepCollision();
-			sim.stepSimulation();
+			if (!frame.isPaused()) {
+				grid.stepCollision();
+				sim.stepSimulation();
+			}
 			if (frame.isGraphicsActive())
 				frame.repaint();
 

@@ -7,9 +7,9 @@ import simulation.Simulation;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,12 +17,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class OrganismCreator extends JPanel implements ActionListener {
+public class OrganismCreator extends JPanel {
 	private final Simulation sim;
 	private final CollisionGrid grid;
 
-	private final JTextArea text;
+	private final JTextPane text;
 	private final JLabel errorLabel;
+
+	private boolean styleEdit = true;
 
 	public OrganismCreator(Simulation sim, CollisionGrid grid) {
 		this.sim = sim;
@@ -31,7 +33,7 @@ public class OrganismCreator extends JPanel implements ActionListener {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBackground(new Color(42, 42, 50));
 
-		text = new JTextArea(28, 16);
+		text = new JTextPane();
 		text.setFont(new Font("Consolas", Font.PLAIN, 16));
 		text.setEditable(true);
 		text.setBackground(new Color(9, 8, 13));
@@ -39,49 +41,49 @@ public class OrganismCreator extends JPanel implements ActionListener {
 		text.setCaretColor(new Color(200, 203, 207));
 
 		JScrollPane codeEditor = new JScrollPane(text);
-		codeEditor.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		codeEditor.setBorder(BorderFactory.createEmptyBorder());
+		codeEditor.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 		codeEditor.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		add(codeEditor);
 
 		LineNumberingTextArea lineNumberingTextArea = new LineNumberingTextArea(text);
 		codeEditor.setRowHeaderView(lineNumberingTextArea);
 
+		SimpleAttributeSet attrs = new SimpleAttributeSet();
+		StyleConstants.setForeground(attrs, new Color(200, 203, 207));
+
+		Runnable removeError = new Runnable() {
+			@Override
+			public void run() {
+				errorLabel.setText(" ");
+				text.getStyledDocument().setCharacterAttributes(0, text.getText().length()+1, attrs, true);
+			}
+		};
 		text.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
-			public void insertUpdate(DocumentEvent documentEvent) {
+			public void insertUpdate(DocumentEvent d) {
 				lineNumberingTextArea.updateLineNumbers();
+				if (!isStyleEdit()) {
+					SwingUtilities.invokeLater(removeError);
+				}
 			}
 
 			@Override
-			public void removeUpdate(DocumentEvent documentEvent) {
+			public void removeUpdate(DocumentEvent d) {
 				lineNumberingTextArea.updateLineNumbers();
+				if (!isStyleEdit()) {
+					SwingUtilities.invokeLater(removeError);
+				}
 			}
 
 			@Override
-			public void changedUpdate(DocumentEvent documentEvent) {
+			public void changedUpdate(DocumentEvent d) {
 				lineNumberingTextArea.updateLineNumbers();
 			}
 		});
 		text.setText("nod 0");
 
-		JPanel textButtonContainer = new JPanel();
-		textButtonContainer.setLayout(new BoxLayout(textButtonContainer, BoxLayout.X_AXIS));
-
-		JButton add = new JButton("Add Organism");
-		add.setBackground(new Color(60,60,72));
-		add.setForeground(new Color(200, 203, 207));
-		add.setFocusPainted(false);
-		add.addActionListener(this);
-		textButtonContainer.add(add);
-
-		JButton save = new JButton("Save As");
-		save.setBackground(new Color(60,60,72));
-		save.setForeground(new Color(200, 203, 207));
-		save.setFocusPainted(false);
-		save.addActionListener(this);
-		textButtonContainer.add(save);
-
-		add(textButtonContainer);
+		add(createEditorButtons());
 
 		errorLabel = new JLabel("Type an organism code");
 		errorLabel.setForeground(new Color(200, 203, 207));
@@ -89,21 +91,29 @@ public class OrganismCreator extends JPanel implements ActionListener {
 		add(errorLabel);
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("Add Organism")) {
+	/**
+	 * Initialize editor buttons
+	 * @return JPanel with buttons
+	 */
+	public JPanel createEditorButtons() {
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+
+		DarkJButton add = new DarkJButton("Add Organism");
+		add.addActionListener(e -> {
 			List<String> code = parseInput(text.getText());
 			if (validateInput(code)) {
 				sim.addOrganicNode(new ReproductiveNode(
 						null,
 						4 + (grid.getWidth()-4) * Math.random(),
 						4 + (grid.getHeight()-4) * Math.random(),
-						2.5,
-						code,
-						sim,
-						grid));
+						2.5, code, sim, grid));
 			}
-		} else if (e.getActionCommand().equals("Save As")) {
+		});
+		buttonPanel.add(add);
+
+		DarkJButton save = new DarkJButton("Save As");
+		save.addActionListener(e -> {
 			JFileChooser fc = new JFileChooser();
 			int result = fc.showSaveDialog(null);
 			if (result == JFileChooser.APPROVE_OPTION){
@@ -114,53 +124,107 @@ public class OrganismCreator extends JPanel implements ActionListener {
 					writer.close();
 				} catch (IOException ex) {
 					ex.printStackTrace();
-
 				}
 			}
-		}
+		});
+		buttonPanel.add(save);
+
+		return buttonPanel;
 	}
 
+	/**
+	 * Convert text editor's code to a list
+	 * @param s the text from the editor
+	 * @return a list containing each line
+	 */
 	private List<String> parseInput(String s) {
 		return new ArrayList<>(Arrays.asList(s.split("\n")));
 	}
 
+	/**
+	 * Ensure the code can create a valid node
+	 * @param s the code list
+	 * @return true if the code is valid
+	 */
 	private boolean validateInput(List<String> s) {
-		errorLabel.setForeground(Color.RED);
 		for (int i = 0; i < s.size(); i++) {
+			// Ensure instruction is formatted correctly
 			String instruction = s.get(i);
 			if (!instruction.contains(" ")) {
-				errorLabel.setText("Line " + (i+1) + ": Invalid formatting!");
+				raiseError(i, "Invalid spacing");
 				return false;
 			}
+
+			// Verify that the node type is registered
 			String word = instruction.substring(0, instruction.indexOf(' '));
-			boolean isValidWord = false;
-			for (String validWord : ReproductiveNode.NODE_TYPES)
-				if (validWord.equals(word)) {
-					isValidWord = true;
+			boolean isValidNode = false;
+			for (String validNode : ReproductiveNode.NODE_TYPES) {
+				if (validNode.equals(word)) {
+					isValidNode = true;
 					break;
 				}
-			if (!isValidWord) {
-				errorLabel.setText("Line " + (i+1) + ": Invalid word!");
+			}
+			if (!isValidNode) {
+				raiseError(i, "Undefined node type");
 				return false;
 			}
+
+			// Check that each index is numeric and in range
 			String[] nums = instruction.substring(instruction.indexOf(' ')+1).split(" ");
 			for (String sNum : nums) {
 				int num;
 				try {
 					num = Integer.parseInt(sNum);
 				} catch (Exception e) {
-					errorLabel.setText("Line " + (i+1) + ": Invalid index!");
+					raiseError(i, "Index is not a number");
 					return false;
 				}
-				if (num < 0 || num > i) {
-					errorLabel.setText("Line " + (i+1) + ": Index is out of range!");
+				if (num < 0) {
+					raiseError(i, "Index is negative");
+					return false;
+				} else if (num > i) {
+					raiseError(i, "Index is out of range");
 					return false;
 				}
 			}
 		}
-		errorLabel.setForeground(new Color(15,200,50));
+		errorLabel.setForeground(new Color(15,200,150));
 		errorLabel.setText("Success!");
-		errorLabel.revalidate();
 		return true;
+	}
+
+	/**
+	 * Set the errorLabel's help text
+	 * @param line the line number the error occurred at
+	 * @param error the specific error
+	 */
+	private void raiseError(int line, String error) {
+		SimpleAttributeSet attrs = new SimpleAttributeSet();
+		StyleConstants.setForeground(attrs, Color.WHITE);
+		StyleConstants.setBackground(attrs, new Color(255,120,120));
+		String code = text.getText();
+		int offset = 0, lineCnt = 0;
+		while (lineCnt != line) {
+			int nextLine = code.indexOf('\n');
+			code = code.substring(nextLine+1);
+			offset += nextLine+1;
+			lineCnt++;
+		}
+		setStyleEdit(true);
+		if (!code.contains("\n"))
+			code += "\n";
+		int end = code.indexOf('\n');
+		text.getStyledDocument().setCharacterAttributes(offset, end, attrs, true);
+		setStyleEdit(false);
+		errorLabel.setForeground(Color.RED);
+		errorLabel.setText(String.format("Line %d: " + error, line+1));
+	}
+
+	public boolean isStyleEdit() {
+		return styleEdit;
+	}
+
+	public void setStyleEdit(boolean styleEdit) {
+		this.styleEdit = styleEdit;
 	}
 }

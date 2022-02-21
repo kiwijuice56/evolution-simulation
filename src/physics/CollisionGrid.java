@@ -189,5 +189,6 @@ public class CollisionGrid {
 	public void setCellSize(int cellSize) {
 		this.cellSize = cellSize;
 	}
+
 	/* * * * * * * * * * * * * * * * * * * * * */
 }
