@@ -1,5 +1,6 @@
 package biotic.organic_nodes;
 
+import physics.Circle;
 import physics.CollisionGrid;
 import physics.Node;
 
@@ -18,5 +19,9 @@ public class AvoidingNode extends DirectionalNode {
 		this.hunger = 0.000025;
 		this.resistance = 1.0;
 		this.impulseStrength = -0.035;
+	}
+
+	public boolean isValidTarget(Circle other){
+		return other instanceof OrganicNode;
 	}
 }

@@ -29,7 +29,7 @@ public class Main {
 			long end = System.nanoTime();
 			if (frame.isLimitedFPS())
 				TimeUnit.NANOSECONDS.sleep(Math.max(0, MIN_WAIT_PER_FRAME - (end - start)));
-			if (iterCount % 100 == 0) {
+			if (iterCount % 100 == 0 && !frame.isPaused()) {
 				iterCount = 0;
 				frame.updateFPS(1/((System.nanoTime()-start)*.000000001));
 				frame.updateNodes(sim.getNodeCount());

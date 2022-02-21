@@ -40,17 +40,18 @@ If an organism has enough energy, it can duplicate its reproductive node and cod
 which will then grow into fully a developed organism.
 
 ### Node Table
-| Tag      | Description | Color |
-| --- | ----------- | -----------|
-| `nod` | Structural, strong virus resistance | ![dark-violet](img/dark-violet.png)
-| `eat` | Consume food for energy, low resistance | ![teal](img/teal.png)
-| `run` | Moves away from presence of nodes | ![purple](img/purple.png)
-| `jit` | Jitter randomly        | ![lavender](img/lavender.png) 
-| `rot` | Rotate randomly        | ![hot-pink](img/hot-pink.png)
-| `fol` | Moves towards other nodes | ![salmon](img/salmon.png)
-| `pre` | Siphon energy from other organisms | ![red](img/red.png)
-| `sto` | Radius changes with energy, high max energy | ![yellow](img/yellow.png)
-| `rep` | (cannot be coded) Organize growing and duplication | ![white](img/white.png)
+| Tag   | Col | Description |
+| ----- | ----------- | -----------|
+| `nod` | ![dark-violet](img/dark-violet.png) | Structural, strong virus resistance
+| `eat` | ![teal](img/teal.png) |  Consume food for energy, low resistance 
+| `run` | ![purple](img/purple.png) | Moves away from other organisms
+| `jit` | ![lavender](img/lavender.png) | Jitter randomly 
+| `rot` | ![hot-pink](img/hot-pink.png)|  Rotate randomly
+| `fol` | ![salmon](img/salmon.png) | Moves towards other organisms 
+| `pre` | ![red](img/red.png) | Siphon energy from other organisms 
+| `sto` | ![yellow](img/yellow.png) | Radius changes with energy, high max energy 
+| `gat` | ![green](img/green.png) | Moves towards food circles
+| `rep` | ![white](img/white.png) |  (cannot be coded) Organizes growing and replication
 
 ### Example Code
 ```

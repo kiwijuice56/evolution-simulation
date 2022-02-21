@@ -4,11 +4,10 @@ import physics.Circle;
 import physics.CollisionGrid;
 import physics.Node;
 
-import java.awt.Color;
 import java.util.List;
 import java.util.Set;
 
-public class DirectionalNode extends OrganicNode {
+public abstract class DirectionalNode extends OrganicNode {
 	private final CollisionGrid grid;
 	private final ReproductiveNode root;
 	protected double impulseStrength = 0.035;
@@ -34,7 +33,7 @@ public class DirectionalNode extends OrganicNode {
 			for (int j = 0; j < 3; j++) {
 				int size = circles.get(circlePtr).size();
 				for (Circle c : circles.get(circlePtr))
-					if (root.getOrganism().contains(c))
+					if (root.getOrganism().contains(c) || !isValidTarget(c))
 						size--;
 				totalCircles += size;
 				sumMat[i][j] = size;
@@ -53,4 +52,6 @@ public class DirectionalNode extends OrganicNode {
 		setvX(getvX() + xDir * impulseStrength);
 		setvY(getvY() + yDir * impulseStrength);
 	}
+
+	public abstract boolean isValidTarget(Circle other);
 }

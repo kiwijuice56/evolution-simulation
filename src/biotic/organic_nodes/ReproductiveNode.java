@@ -18,17 +18,18 @@ public class ReproductiveNode extends OrganicNode {
 	private static final double ENERGY_TO_REPRODUCE = 2.0;
 	private static final double REPRODUCTION_COST_PER_CHILD = 0.5;
 	private static final double DISCOUNT_PER_GROWTH = 0.75;
+	private static final double INITIAL_ENERGY = 2.5;
 
 	private static final double GENERATIONAL_ERROR_GROWTH = 0.005;
 	private static final double MAX_GENERATIONAL_ERROR = 0.5;
 	private static final double INSTRUCTION_INSERTION_CHANCE = 0.015;
 	private static final double INSTRUCTION_DELETION_CHANCE = 0.0025;
 	private static final double WORD_TRANSFORM_CHANCE = 0.05;
-	private static final double DIGIT_INSERT_CHANCE = 0.00045;
+	private static final double DIGIT_INSERT_CHANCE = 0.00075;
 	private static final double DIGIT_DELETE_CHANCE = 0.00005;
 	private static final double DIGIT_TRANSFORM_CHANCE = 0.00025;
 
-	public static final String[] NODE_TYPES = {"nod", "jit", "rot", "eat", "pre", "sto", "fol", "run"};
+	public static final String[] NODE_TYPES = {"nod", "jit", "rot", "eat", "pre", "sto", "fol", "run", "gat"};
 
 	private final List<String> code;
 	private final List<String> permCode;
@@ -48,7 +49,7 @@ public class ReproductiveNode extends OrganicNode {
 		organism.add(this);
 
 		this.hunger = 0.0006;
-		this.maxEnergy = 5.0;
+		this.maxEnergy = 6.0;
 		this.radius = 4.0;
 		this.mass = 5.0;
 		this.color = new Color(255, 255, 255);
@@ -85,6 +86,7 @@ public class ReproductiveNode extends OrganicNode {
 			case "sto" -> new StorageNode();
 			case "fol" -> new TrackingNode(grid, this);
 			case "run" -> new AvoidingNode(grid, this);
+			case "gat" -> new FoodGatherNode(grid, this);
 			default -> new OrganicNode();
 		};
 
@@ -102,7 +104,7 @@ public class ReproductiveNode extends OrganicNode {
 
 	private void reproduce() {
 		children++;
-		ReproductiveNode child = new ReproductiveNode(null, getX(), getY(), 2.0, shuffleCode(permCode, children), sim, grid);
+		ReproductiveNode child = new ReproductiveNode(null, getX(), getY(), INITIAL_ENERGY, shuffleCode(permCode, children), sim, grid);
 		sim.addOrganicNode(child);
 		child.setvX(2*(Math.random() - 0.5));
 		child.setvY(2*(Math.random() - 0.5));
@@ -164,6 +166,9 @@ public class ReproductiveNode extends OrganicNode {
 		return newCode;
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * * */
+
+	@Override
 	public double getHunger() {
 		return hunger * (children+1);
 	}
@@ -179,4 +184,6 @@ public class ReproductiveNode extends OrganicNode {
 	public List<String> getPermCode() {
 		return permCode;
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * * */
 }
