@@ -86,6 +86,7 @@ nod 4 9
 </p>
 <p align = "center"><b>Organism created from code example</b></p>
 
+### Evolution
 When an organism duplicates, its code can contain errors through
 swaps, deletions, and insertions. Over time, many organism
 types can be created.
@@ -97,3 +98,12 @@ types can be created.
 
 Experiment with the starting conditions to see what organisms
 you can create!
+
+## Running the program
+The release files were compiled using Java 17. If you encounter errors while trying to execute the jar,
+ensure that Java 17 is configured in your PATH and run the program from the terminal.
+
+<p align="center">
+  <img src="img/screenshot8.png" alt="running the program"/>
+</p>
+<p align = "center"><b>Run</b></p>
