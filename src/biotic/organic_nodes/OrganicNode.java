@@ -73,7 +73,7 @@ public class OrganicNode extends Node {
 		if (other instanceof Virus && !(other.isDeletable())) {
 			other.setDeletable(true);
 			double stolenEnergy = getEnergy() * (1.0 / getResistance());
-			setEnergy(getEnergy() - stolenEnergy);
+			setEnergy(Math.max(0.0001, getEnergy() - stolenEnergy));
 		}
 	}
 

@@ -18,7 +18,7 @@ public class RotationalNode extends OrganicNode {
 		this.radius = 5.0;
 		this.mass = 3.0;
 		this.color = new Color(175, 90, 125);
-		this.hunger = 0.0006;
+		this.hunger = 0.00045;
 		this.resistance = 1.0;
 		angle = Math.random() * Math.PI;
 	}

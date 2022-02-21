@@ -122,6 +122,22 @@ public class CollisionGrid {
 		return cells;
 	}
 
+	public List<Set<Circle>> getGridCells(double x, double y) {
+		List<Set<Circle>> cells = new ArrayList<>();
+		for (int i = -1; i <= 1; i++) {
+			for (int j = -1; j <= 1; j++) {
+				int cX = ((int) (x / cellSize)) + j;
+				int cY = ((int) (y / cellSize)) + i;
+				if (cY < 0 || cY >= grid.size() || cX < 0 || cX >= grid.get(cY).size()) {
+					cells.add(new HashSet<>());
+					continue;
+				}
+				cells.add(grid.get(cY).get(cX));
+			}
+		}
+		return cells;
+	}
+
 	public void removeFromCells(Circle circle) {
 		for (Set<Circle> cell : getGridCells(circle))
 			cell.remove(circle);

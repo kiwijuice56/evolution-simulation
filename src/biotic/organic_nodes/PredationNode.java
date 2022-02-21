@@ -5,8 +5,9 @@ import physics.Node;
 
 import java.awt.Color;
 
-public class PredationNode extends OrganicNode {
-	private static final double ENERGY_LOSS = 2.0;
+public class PredationNode extends EnergyAbsorbingNode {
+	private static final double ENERGY_LOSS = 1.25;
+
 	private final ReproductiveNode root;
 
 	public PredationNode(ReproductiveNode root) {
@@ -15,9 +16,9 @@ public class PredationNode extends OrganicNode {
 
 	public PredationNode(Node linkedNode, ReproductiveNode root, double x, double y, double energy) {
 		super(linkedNode, x, y, energy);
-		this.radius = 7.0;
+		this.radius = 8.0;
 		this.color = new Color(255, 0, 25);
-		this.hunger = 0.0003;
+		this.hunger = 0.00015;
 		this.maxEnergy = 3.0;
 		this.root = root;
 	}

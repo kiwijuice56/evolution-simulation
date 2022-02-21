@@ -48,8 +48,9 @@ which will then grow into fully a developed organism.
 | `jit`   | Jitter randomly        | Lavender 
 | `pre`   | Siphon energy from other organisms        | Red
 | `sto` | Radius changes with energy, high max energy | Yellow
+| `run` | Moves away from presence of nodes | Purple
+| `fol` | Moves towards other nodes | Salmon
 | `rep` (cannot be coded) | Organize growing and duplication | Grey
-
 
 ### Example Code
 ```

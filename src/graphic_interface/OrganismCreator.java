@@ -100,7 +100,8 @@ public class OrganismCreator extends JPanel implements ActionListener {
 						4 + (grid.getHeight()-4) * Math.random(),
 						2.5,
 						code,
-						sim));
+						sim,
+						grid));
 			}
 		} else if (e.getActionCommand().equals("Save As")) {
 			JFileChooser fc = new JFileChooser();
