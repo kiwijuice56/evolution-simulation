@@ -7,7 +7,7 @@ import physics.Node;
 import java.awt.Color;
 
 public class TrackingNode extends DirectionalNode {
-	
+
 	public TrackingNode(CollisionGrid grid, ReproductiveNode root) {
 		this(grid, root, null, 0, 0, 1.0);
 	}
@@ -18,6 +18,7 @@ public class TrackingNode extends DirectionalNode {
 		this.radius = 5.0;
 		this.color = new Color(255,75,75);
 		this.hunger = 0.000025;
+		this.resistance = 1.0;
 		this.impulseStrength = 0.035;
 	}
 }

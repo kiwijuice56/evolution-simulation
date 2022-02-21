@@ -16,6 +16,7 @@ public class AvoidingNode extends DirectionalNode {
 		this.radius = 5.0;
 		this.color = new Color(125,25,215);
 		this.hunger = 0.000025;
+		this.resistance = 1.0;
 		this.impulseStrength = -0.035;
 	}
 }

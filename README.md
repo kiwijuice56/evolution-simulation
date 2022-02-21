@@ -41,16 +41,16 @@ which will then grow into fully a developed organism.
 
 ### Node Table
 | Tag      | Description | Color |
-| ----------- | ----------- | -----------|
-| `nod`      | Structural, strong virus resistance       | Dark violet
-| `eat`   | Consume food for energy, low resistance        | Teal
-| `rot`   | Rotate randomly        | Pink
-| `jit`   | Jitter randomly        | Lavender 
-| `pre`   | Siphon energy from other organisms        | Red
-| `sto` | Radius changes with energy, high max energy | Yellow
-| `run` | Moves away from presence of nodes | Purple
-| `fol` | Moves towards other nodes | Salmon
-| `rep` (cannot be coded) | Organize growing and duplication | Grey
+| --- | ----------- | -----------|
+| `nod` | Structural, strong virus resistance | ![dark-violet](img/dark-violet.png)
+| `eat` | Consume food for energy, low resistance | ![teal](img/teal.png)
+| `run` | Moves away from presence of nodes | ![purple](img/purple.png)
+| `jit` | Jitter randomly        | ![lavender](img/lavender.png) 
+| `rot` | Rotate randomly        | ![hot-pink](img/hot-pink.png)
+| `fol` | Moves towards other nodes | ![salmon](img/salmon.png)
+| `pre` | Siphon energy from other organisms | ![red](img/red.png)
+| `sto` | Radius changes with energy, high max energy | ![yellow](img/yellow.png)
+| `rep` (cannot be coded) | Organize growing and duplication | ![white](img/white.png)
 
 ### Example Code
 ```

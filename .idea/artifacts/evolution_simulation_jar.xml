@@ -2,10 +2,10 @@
   <artifact type="jar" name="evolution-simulation:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/evolution_simulation_jar</output-path>
     <root id="archive" name="evolution-simulation.jar">
-      <element id="module-output" name="evolution-simulation" />
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
       </element>
+      <element id="module-output" name="evolution-simulation" />
     </root>
   </artifact>
 </component>
