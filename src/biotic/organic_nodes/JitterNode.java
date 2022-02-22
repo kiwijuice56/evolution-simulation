@@ -4,6 +4,9 @@ import physics.Node;
 
 import java.awt.Color;
 
+/**
+ * Moves randomly in all directions
+ */
 public class JitterNode extends OrganicNode {
 	private final static double IMPULSE_STRENGTH = 0.04;
 
@@ -16,7 +19,7 @@ public class JitterNode extends OrganicNode {
 		this.color = new Color(155, 135, 255);
 		this.radius = 5.0;
 		this.mass = 3.0;
-		this.hunger = 0.0002;
+		this.hunger = 0.00015;
 		this.resistance = 1.0;
 	}
 

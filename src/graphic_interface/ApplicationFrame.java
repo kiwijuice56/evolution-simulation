@@ -3,12 +3,15 @@ package graphic_interface;
 import physics.CollisionGrid;
 import simulation.Simulation;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.io.IOException;
+import java.util.Arrays;
 
 /**
- * Contains all GUI
+ * Contains all GUI for the program
  */
 public class ApplicationFrame extends JFrame  {
 	private JLabel fpsLabel;
@@ -22,6 +25,15 @@ public class ApplicationFrame extends JFrame  {
 		setTitle("Evolution simulation");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
+		Image icon;
+		try {
+			icon = ImageIO.read(ApplicationFrame.class.getResource("/icon.png"));
+		} catch (IOException ex) {
+			System.out.println(Arrays.toString(ex.getStackTrace()));
+			return;
+		}
+		setIconImage(icon);
+
 		getContentPane().setBackground(new Color(42, 42, 50));
 
 		GridPanel panel = new GridPanel(grid);
@@ -35,6 +47,10 @@ public class ApplicationFrame extends JFrame  {
 		setVisible(true);
 	}
 
+	/**
+	 * Initializes bottom panel and all associated labels and buttons
+	 * @return the initialized panel
+	 */
 	private JPanel createBottomPanel() {
 		JPanel bottomPanel = new JPanel();
 		bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.X_AXIS));

@@ -99,13 +99,17 @@ public class CollisionGrid {
 
 			c.collisionStep();
 		}
-		// Slightly awkward, need to remove all circle ref from grid and then remove circles entirely
-		// without concurrent modification exception
+		// Remove all tagged circles from the grid and circle set
 		circles.stream().filter(Circle::isDeletable).forEach(this::removeFromCells);
 		circles.removeIf(Circle::isDeletable);
 
 	}
 
+	/**
+	 * Return the cells that this circle is a part of
+	 * @param circle the circle to get associated grid cells
+	 * @return a list of cells
+	 */
 	public List<Set<Circle>> getGridCells(Circle circle) {
 		int x1 = (int) (circle.getX() - circle.getRadius()) / cellSize;
 		int x2 = (int) (circle.getX() + circle.getRadius()) / cellSize;
@@ -122,6 +126,12 @@ public class CollisionGrid {
 		return cells;
 	}
 
+	/**
+	 * Return the nine closest cells to the coordinates given
+	 * @param x the x coordinate
+	 * @param y the y coordinate
+	 * @return the nine closet cells centered around (x, y)
+	 */
 	public List<Set<Circle>> getGridCells(double x, double y) {
 		List<Set<Circle>> cells = new ArrayList<>();
 		for (int i = -1; i <= 1; i++) {
@@ -138,11 +148,20 @@ public class CollisionGrid {
 		return cells;
 	}
 
+	/**
+	 * Remove a circle from all the grid cells that contain it
+	 * @param circle the circle to remove
+	 */
 	public void removeFromCells(Circle circle) {
 		for (Set<Circle> cell : getGridCells(circle))
 			cell.remove(circle);
 	}
 
+	/**
+	 * Add a circle to the circle set and the appropriate grid cells
+	 * @param circle the circle to add
+	 * @return true if the addition was successful, false if this circle was already inside the set
+	 */
 	public boolean addCircle(Circle circle) {
 		if (circles.contains(circle))
 			return false;

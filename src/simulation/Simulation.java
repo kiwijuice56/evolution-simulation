@@ -1,17 +1,18 @@
 package simulation;
 
-import biotic.Food;
-import biotic.Producer;
-import biotic.VirusProducer;
+import biotic.producers.Producer;
+import biotic.producers.VirusProducer;
 import biotic.organic_nodes.*;
-import biotic.FoodProducer;
+import biotic.producers.FoodProducer;
 import physics.Circle;
 import physics.CollisionGrid;
 
 import java.util.*;
 
+/**
+ * Step through the biological simulation steps for OrganicNodes and Producers
+ */
 public class Simulation {
-
 	private final CollisionGrid grid;
 
 	private final Set<OrganicNode> organicNodes;
@@ -23,9 +24,21 @@ public class Simulation {
 		organicNodes = new HashSet<>();
 		toAdd = new HashSet<>();
 		producers = new HashSet<>();
-		initializeFood(grid);
+		for (int i = 0; i < 11; i++) {
+			FoodProducer f = new FoodProducer(Math.random() * grid.getWidth(), Math.random() * grid.getHeight(), this);
+			grid.addCircle(f);
+			producers.add(f);
+		}
+		for (int i = 0; i < 2; i++) {
+			VirusProducer f = new VirusProducer(Math.random() * grid.getWidth(), Math.random() * grid.getHeight(), this);
+			grid.addCircle(f);
+			producers.add(f);
+		}
 	}
 
+	/**
+	 * Step through one frame for all OrganicNodes and Producers
+	 */
 	public void stepSimulation() {
 		for (OrganicNode node: organicNodes) {
 			if (!node.lifeStep())
@@ -41,10 +54,11 @@ public class Simulation {
 		organicNodes.removeIf(OrganicNode::isDeletable);
 	}
 
-	public void addProduct(Circle c) {
-		grid.addCircle(c);
-	}
-
+	/**
+	 * Adds an OrganicNode to a list of nodes to add at the end of the frame
+	 * @param node the node to add
+	 * @return true if the addition was successful, false if the node was already within the addition list
+	 */
 	public boolean addOrganicNode(OrganicNode node) {
 		if (toAdd.contains(node))
 			return false;
@@ -52,20 +66,15 @@ public class Simulation {
 		return true;
 	}
 
-	private void initializeFood(CollisionGrid grid) {
-		for (int i = 0; i < 11; i++) {
-			FoodProducer f = new FoodProducer(Math.random() * grid.getWidth(), Math.random() * grid.getHeight(), this);
-			grid.addCircle(f);
-			producers.add(f);
-		}
-		for (int i = 0; i < 2; i++) {
-			VirusProducer f = new VirusProducer(Math.random() * grid.getWidth(), Math.random() * grid.getHeight(), this);
-			grid.addCircle(f);
-			producers.add(f);
-		}
+	/* * * * * * * * * * * * * * * * * * * * * */
+
+	public void addProduct(Circle c) {
+		grid.addCircle(c);
 	}
 
 	public int getNodeCount() {
 		return organicNodes.size();
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * * */
 }

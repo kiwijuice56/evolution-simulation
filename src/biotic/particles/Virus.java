@@ -1,9 +1,12 @@
-package biotic;
+package biotic.particles;
 
 import physics.Circle;
 
 import java.awt.Color;
 
+/**
+ * Virus particles that can be absorbed by OrganicNodes
+ */
 public class Virus extends Circle {
 	private static final double MASS_MIN = 0.05;
 	private static final double MASS_MAX = 0.5;

@@ -4,8 +4,11 @@ import physics.Node;
 
 import java.awt.Color;
 
+/**
+ * Changes radius with energy and has a large maximum energy
+ */
 public class StorageNode extends OrganicNode {
-	private final static double MAX_RADIUS = 12.0;
+	private final static double MAX_RADIUS = 13.0;
 
 	public StorageNode() {
 		this(null, 0, 0, 1.0);
@@ -15,7 +18,7 @@ public class StorageNode extends OrganicNode {
 		super(linkedNode, x, y, energy);
 		this.color = new Color(255,200,0);
 		this.radius = getRadius();
-		this.maxEnergy = 6.0;
+		this.maxEnergy = 8.0;
 		this.hunger = 0.000005;
 		this.resistance = 1.25;
 	}

@@ -6,12 +6,15 @@ import physics.Node;
 
 import java.awt.Color;
 
-public class AvoidingNode extends DirectionalNode {
-	public AvoidingNode(CollisionGrid grid, ReproductiveNode root) {
+/**
+ * Avoids nodes of other organisms
+ */
+public class RunningNode extends DirectionalNode {
+	public RunningNode(CollisionGrid grid, ReproductiveNode root) {
 		this(grid, root, null, 0, 0, 1.0);
 	}
 
-	public AvoidingNode(CollisionGrid grid, ReproductiveNode root, Node linkedNode, double x, double y, double energy) {
+	public RunningNode(CollisionGrid grid, ReproductiveNode root, Node linkedNode, double x, double y, double energy) {
 		super(grid, root, linkedNode, x, y, energy);
 		this.mass = 2.0;
 		this.radius = 5.0;
@@ -21,6 +24,11 @@ public class AvoidingNode extends DirectionalNode {
 		this.impulseStrength = -0.035;
 	}
 
+	/**
+	 * Ensures considered circle are organic nodes
+	 * @param other the circle to be considered
+	 * @return whether the circle is an organic and target-able node
+	 */
 	public boolean isValidTarget(Circle other){
 		return other instanceof OrganicNode;
 	}

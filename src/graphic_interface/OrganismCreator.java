@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Creates a code editor for adding new organism codes
+ */
 public class OrganismCreator extends JPanel {
 	private final Simulation sim;
 	private final CollisionGrid grid;
@@ -63,6 +66,7 @@ public class OrganismCreator extends JPanel {
 			@Override
 			public void insertUpdate(DocumentEvent d) {
 				lineNumberingTextArea.updateLineNumbers();
+				// Only update if this is not a style edit to prevent infinite loops
 				if (!isStyleEdit()) {
 					SwingUtilities.invokeLater(removeError);
 				}
@@ -71,6 +75,7 @@ public class OrganismCreator extends JPanel {
 			@Override
 			public void removeUpdate(DocumentEvent d) {
 				lineNumberingTextArea.updateLineNumbers();
+				// Only update if this is not a style edit to prevent infinite loops
 				if (!isStyleEdit()) {
 					SwingUtilities.invokeLater(removeError);
 				}

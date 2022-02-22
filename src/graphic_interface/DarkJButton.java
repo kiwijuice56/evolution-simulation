@@ -20,6 +20,11 @@ public class DarkJButton extends JButton {
 		setContentAreaFilled(false);
 		setFocusPainted(false);
 	}
+
+	/**
+	 * Overrides JButton method to draw new colors
+	 * @param g the Graphics component
+	 */
 	@Override
 	protected void paintComponent(Graphics g) {
 		if (getModel().isPressed()) {

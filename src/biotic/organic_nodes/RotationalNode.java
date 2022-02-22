@@ -4,6 +4,9 @@ import physics.Node;
 
 import java.awt.Color;
 
+/**
+ * Rotates randomly in all directions
+ */
 public class RotationalNode extends OrganicNode {
 	private final static double MAX_ANGLE_CHANGE = 0.02;
 	private final static double IMPULSE_STRENGTH = 0.02;

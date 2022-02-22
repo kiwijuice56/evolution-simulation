@@ -30,8 +30,7 @@ public class Node extends Circle {
 		super.draw(g, x, y);
 		g.setColor(Color.GRAY);
 		for (Node n : connections) {
-			g.drawLine(
-					(int)Math.round(getX()) + x, (int)Math.round(getY()) + y,
+			g.drawLine((int)Math.round(getX()) + x, (int)Math.round(getY()) + y,
 					(int)Math.round(n.getX()) + x, (int)Math.round(n.getY()) + y);
 		}
 

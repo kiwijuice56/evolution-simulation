@@ -1,8 +1,11 @@
-package biotic;
+package biotic.particles;
 
 import physics.Circle;
 import java.awt.Color;
 
+/**
+ * Food particles that can be absorbed by EatingNodes
+ */
 public class Food extends Circle {
 	private static final double MASS_MIN = 0.05;
 	private static final double MASS_MAX = 0.5;

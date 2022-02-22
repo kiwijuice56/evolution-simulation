@@ -1,19 +1,20 @@
 package biotic.organic_nodes;
 
-import biotic.Food;
-import biotic.Virus;
+import biotic.particles.Virus;
 import physics.Circle;
 import physics.Node;
 
 import java.awt.Color;
 
+/**
+ * Implements energy and life mechanics to the node class to simulate life
+ * The OrganicNode is also known as the "structural" or "default" node
+ */
 public class OrganicNode extends Node {
 	private double energy;
 	protected double hunger;
 	protected double maxEnergy;
 	protected double resistance;
-
-	private double excess;
 
 	public OrganicNode() {
 		this(null, 0, 0, 1);
@@ -39,6 +40,44 @@ public class OrganicNode extends Node {
 		return energy > 0;
 	}
 
+	/**
+	 * Average energy between node connections
+	 */
+	public void shareEnergy() {
+		for (Node other : getConnections()) {
+			OrganicNode otherOrganic = (OrganicNode) other;
+			double averageEnergy = (otherOrganic.getEnergy() + getEnergy()) / 2.0;
+			if (averageEnergy > getMaxEnergy()) {
+				double overflow = averageEnergy - getMaxEnergy();
+				setEnergy(averageEnergy);
+				otherOrganic.setEnergy(averageEnergy + overflow);
+			} else if (averageEnergy > otherOrganic.getMaxEnergy()) {
+				double overflow = averageEnergy - otherOrganic.getMaxEnergy();
+				setEnergy(averageEnergy + overflow);
+				otherOrganic.setEnergy(averageEnergy);
+			} else {
+				setEnergy(averageEnergy);
+				otherOrganic.setEnergy(averageEnergy);
+			}
+		}
+	}
+
+	/**
+	 * Override circle method to have energy removed from viruses
+	 * @param other the circle collided with
+	 */
+	@Override
+	public void collidedWith(Circle other) {
+		if (other instanceof Virus && !(other.isDeletable())) {
+			other.setDeletable(true);
+			double stolenEnergy = getEnergy() * (1.0 / getResistance());
+			// Prevent the node from immediately dying and destroying the organism structure
+			setEnergy(Math.max(0.0001, getEnergy() - stolenEnergy));
+		}
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * * */
+
 	@Override
 	public void setDeletable(boolean deletable) {
 		super.setDeletable(deletable);
@@ -49,35 +88,14 @@ public class OrganicNode extends Node {
 		}
 	}
 
-	public void shareEnergy() {
-		for (Node other : getConnections()) {
-			OrganicNode otherOrganic = (OrganicNode) other;
-			double averageEnergy = (otherOrganic.getEnergy() + getEnergy()) / 2.0;
-			if (averageEnergy > getMaxEnergy()) {
-				double excess = averageEnergy - getMaxEnergy();
-				setEnergy(averageEnergy);
-				otherOrganic.setEnergy(averageEnergy + excess);
-			} else if (averageEnergy > otherOrganic.getMaxEnergy()) {
-				double excess = averageEnergy - otherOrganic.getMaxEnergy();
-				setEnergy(averageEnergy + excess);
-				otherOrganic.setEnergy(averageEnergy);
-			} else {
-				setEnergy(averageEnergy);
-				otherOrganic.setEnergy(averageEnergy);
-			}
-		}
-	}
-
 	@Override
-	public void collidedWith(Circle other) {
-		if (other instanceof Virus && !(other.isDeletable())) {
-			other.setDeletable(true);
-			double stolenEnergy = getEnergy() * (1.0 / getResistance());
-			setEnergy(Math.max(0.0001, getEnergy() - stolenEnergy));
-		}
+	public Color getColor() {
+		double scale = Math.min(1, getEnergy() / getMaxEnergy() + .05);
+		return new Color(
+				(int) (super.getColor().getRed() * scale),
+				(int) (super.getColor().getGreen() * scale),
+				(int) (super.getColor().getBlue() * scale));
 	}
-
-	/* * * * * * * * * * * * * * * * * * * * * */
 
 	public double getEnergy() {
 		return energy;
@@ -97,15 +115,6 @@ public class OrganicNode extends Node {
 
 	public double getResistance() {
 		return resistance;
-	}
-
-	@Override
-	public Color getColor() {
-		double scale = Math.min(1, getEnergy() / getMaxEnergy() + .05);
-		return new Color(
-				(int) (super.getColor().getRed() * scale),
-				(int) (super.getColor().getGreen() * scale),
-				(int) (super.getColor().getBlue() * scale));
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * * */

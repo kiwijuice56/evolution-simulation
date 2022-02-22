@@ -7,6 +7,9 @@ import physics.Node;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Abstract node that scans the surrounding nine cells to move in a direction over time
+ */
 public abstract class DirectionalNode extends OrganicNode {
 	private final CollisionGrid grid;
 	private final ReproductiveNode root;
@@ -22,36 +25,50 @@ public abstract class DirectionalNode extends OrganicNode {
 		this.root = root;
 	}
 
+	/**
+	 * Overrides circle method to recalculate scan in each frame
+	 */
 	@Override
 	public void collisionStep() {
 		super.collisionStep();
-		int totalCircles = 0;
+		int totalCircles = 0, circlePtr = 0;
+		int[][] densityMat = new int[3][3];
 		List<Set<Circle>> circles = grid.getGridCells(getX(), getY());
-		int[][] sumMat = new int[3][3];
-		int circlePtr = 0;
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
+				// Get the total circles in this grid cell
 				int size = circles.get(circlePtr).size();
+				// Ensures circle is a valid target (implemented by subclasses) and not a part of the same organism
 				for (Circle c : circles.get(circlePtr))
 					if (root.getOrganism().contains(c) || !isValidTarget(c))
 						size--;
 				totalCircles += size;
-				sumMat[i][j] = size;
+				densityMat[i][j] = size;
 				circlePtr++;
 			}
 		}
 		if (totalCircles == 0)
 			return;
+
+		// Calculate direction using matrix
+		// vX= -1  0  1      vY= 1  1  1
+		//     -1  0  1 * d      0  0  0 * d
+		//     -1  0  1         -1 -1 -1
 		double xDir = 0, yDir = 0;
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
-				xDir += j*sumMat[i+1][j+1] / (double)totalCircles;
-				yDir += i*sumMat[i+1][j+1] / (double)totalCircles;
+				xDir += j*densityMat[i+1][j+1] / (double)totalCircles;
+				yDir += i*densityMat[i+1][j+1] / (double)totalCircles;
 			}
 		}
 		setvX(getvX() + xDir * impulseStrength);
 		setvY(getvY() + yDir * impulseStrength);
 	}
 
+	/**
+	 * Determine if circle should be considered in density calculations
+	 * @param other the circle to be considered
+	 * @return whether the circle is a valid target
+	 */
 	public abstract boolean isValidTarget(Circle other);
 }

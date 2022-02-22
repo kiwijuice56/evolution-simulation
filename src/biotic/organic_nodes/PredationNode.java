@@ -5,6 +5,9 @@ import physics.Node;
 
 import java.awt.Color;
 
+/**
+ * Absorbs energy from other organism nodes
+ */
 public class PredationNode extends EnergyAbsorbingNode {
 	private static final double ENERGY_LOSS = 1.15;
 

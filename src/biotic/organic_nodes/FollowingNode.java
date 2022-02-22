@@ -6,13 +6,16 @@ import physics.Node;
 
 import java.awt.Color;
 
-public class TrackingNode extends DirectionalNode {
+/**
+ * Follows nodes of other organisms
+ */
+public class FollowingNode extends DirectionalNode {
 
-	public TrackingNode(CollisionGrid grid, ReproductiveNode root) {
+	public FollowingNode(CollisionGrid grid, ReproductiveNode root) {
 		this(grid, root, null, 0, 0, 1.0);
 	}
 
-	public TrackingNode(CollisionGrid grid, ReproductiveNode root, Node linkedNode, double x, double y, double energy) {
+	public FollowingNode(CollisionGrid grid, ReproductiveNode root, Node linkedNode, double x, double y, double energy) {
 		super(grid, root, linkedNode, x, y, energy);
 		this.mass = 2.0;
 		this.radius = 5.0;
@@ -22,6 +25,11 @@ public class TrackingNode extends DirectionalNode {
 		this.impulseStrength = 0.035;
 	}
 
+	/**
+	 * Ensures considered circle are organic nodes
+	 * @param other the circle to be considered
+	 * @return whether the circle is an organic and target-able node
+	 */
 	public boolean isValidTarget(Circle other){
 		return other instanceof OrganicNode;
 	}

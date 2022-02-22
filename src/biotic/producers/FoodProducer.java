@@ -1,9 +1,13 @@
-package biotic;
+package biotic.producers;
 
+import biotic.particles.Food;
 import simulation.Simulation;
 
 import java.awt.Color;
 
+/**
+ * Spawns new food circle surrounding the exterior of this circle
+ */
 public class FoodProducer extends Producer {
 	private static final double MASS_MIN = 3;
 	private static final double MASS_MAX = 6;
@@ -19,6 +23,9 @@ public class FoodProducer extends Producer {
 		this.color = new Color(128, 200, 70);
 	}
 
+	/**
+	 * Overrides producer method to create food circles
+	 */
 	@Override
 	public void produce() {
 		if (FOOD_CHANCE > Math.random()) {

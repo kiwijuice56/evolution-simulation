@@ -6,6 +6,9 @@ import simulation.Simulation;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Main runner of the program, handles frames per second
+ */
 public class Main {
 	private static final long MIN_WAIT_PER_FRAME = 2000000;
 	public static final int WIDTH = 2400;
@@ -16,6 +19,8 @@ public class Main {
 		Simulation sim = new Simulation(grid);
 		ApplicationFrame frame = new ApplicationFrame(grid, sim);
 		int iterCount = 0;
+
+		// Infinite program loop
 		while (true) {
 			long start = System.nanoTime();
 
@@ -23,12 +28,14 @@ public class Main {
 				grid.stepCollision();
 				sim.stepSimulation();
 			}
+
 			if (frame.isGraphicsActive())
 				frame.repaint();
 
 			long end = System.nanoTime();
 			if (frame.isLimitedFPS())
 				TimeUnit.NANOSECONDS.sleep(Math.max(0, MIN_WAIT_PER_FRAME - (end - start)));
+			// Update counters at certain intervals to make the labels readable
 			if (iterCount % 100 == 0 && !frame.isPaused()) {
 				iterCount = 0;
 				frame.updateFPS(1/((System.nanoTime()-start)*.000000001));

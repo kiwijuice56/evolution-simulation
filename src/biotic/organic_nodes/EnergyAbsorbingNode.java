@@ -2,6 +2,9 @@ package biotic.organic_nodes;
 
 import physics.Node;
 
+/**
+ * Abstract node that implements "excess" mechanic to consume energy and flow it into surrounding nodes
+ */
 public abstract class EnergyAbsorbingNode extends OrganicNode {
 	protected static final double MAX_EXCESS = 2.0;
 	private double excess;
@@ -14,6 +17,10 @@ public abstract class EnergyAbsorbingNode extends OrganicNode {
 		super(linkedNode, x, y, energy);
 	}
 
+	/**
+	 * Override OrganicNode method to allow flow of excess energy
+	 * @return whether this node is alive
+	 */
 	@Override
 	public boolean lifeStep() {
 		setEnergy(getEnergy() - getHunger());

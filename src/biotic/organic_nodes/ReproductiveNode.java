@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Handles the reproduction and growth of an organism
+ */
 public class ReproductiveNode extends OrganicNode {
 	private final Simulation sim;
 	private final CollisionGrid grid;
@@ -19,6 +22,7 @@ public class ReproductiveNode extends OrganicNode {
 	private static final double REPRODUCTION_COST_PER_CHILD = 0.5;
 	private static final double DISCOUNT_PER_GROWTH = 0.75;
 	private static final double INITIAL_ENERGY = 2.5;
+	private static final double INITIAL_SPEED = 2.5;
 
 	private static final double GENERATIONAL_ERROR_GROWTH = 0.005;
 	private static final double MAX_GENERATIONAL_ERROR = 0.5;
@@ -34,7 +38,7 @@ public class ReproductiveNode extends OrganicNode {
 	private final List<String> code;
 	private final List<String> permCode;
 	private final List<OrganicNode> organism;
-	private int children = 0;
+	private int childCount = 0;
 
 	public ReproductiveNode(Node linkedNode, double x, double y, double energy, List<String> code, Simulation sim, CollisionGrid grid) {
 		super(linkedNode, x, y, energy);
@@ -48,29 +52,36 @@ public class ReproductiveNode extends OrganicNode {
 		this.organism = new ArrayList<>();
 		organism.add(this);
 
-		this.hunger = 0.0006;
-		this.maxEnergy = 6.0;
 		this.radius = 4.0;
 		this.mass = 5.0;
 		this.color = new Color(255, 255, 255);
+		this.hunger = 0.0006;
+		this.maxEnergy = 6.0;
 		this.resistance = 0.75;
 	}
 
+	/**
+	 * Overrides OrganicNode method to check if the node has enough energy for reproduction and growth processes
+	 * @return whether this organism is alive
+	 */
 	@Override
 	public boolean lifeStep() {
 		boolean isAlive = super.lifeStep();
 		if (isAlive && code.size() > 0 && getEnergy() >= ENERGY_TO_GROW) {
-			String instruction = code.remove(code.size()-1);
-			createNode(instruction);
+			createNode(code.remove(code.size()-1));
 			setEnergy(getEnergy() * GROWTH_ENERGY_MULTIPLIER);
 			hunger *= DISCOUNT_PER_GROWTH;
-		} else if (isSolid() && isAlive && code.size() == 0 && getEnergy() >= ENERGY_TO_REPRODUCE + REPRODUCTION_COST_PER_CHILD * children) {
+		} else if (isSolid() && isAlive && code.size() == 0 && getEnergy() >= ENERGY_TO_REPRODUCE + REPRODUCTION_COST_PER_CHILD * childCount) {
 			reproduce();
 			setEnergy(0);
 		}
 		return isAlive;
 	}
 
+	/**
+	 * Creates a new node to attach to this organism
+	 * @param instruction the single line instruction from the code
+	 */
 	private void createNode(String instruction) {
 		String type = instruction.substring(0, instruction.indexOf(' '));
 		String[] nums = instruction.substring(instruction.indexOf(' ') + 1).split(" ");
@@ -84,15 +95,15 @@ public class ReproductiveNode extends OrganicNode {
 			case "eat" -> new EatingNode();
 			case "pre" -> new PredationNode(this);
 			case "sto" -> new StorageNode();
-			case "fol" -> new TrackingNode(grid, this);
-			case "run" -> new AvoidingNode(grid, this);
-			case "gat" -> new FoodGatherNode(grid, this);
+			case "fol" -> new FollowingNode(grid, this);
+			case "run" -> new RunningNode(grid, this);
+			case "gat" -> new GatheringNode(grid, this);
 			default -> new OrganicNode();
 		};
 
 		node.setEnergy(0.0);
-		node.setX(organism.get(root).getX()+getRadius()*2);
-		node.setY(organism.get(root).getY()+getRadius()*2);
+		node.setX(organism.get(root).getX() + organism.get(root).getRadius() + getRadius());
+		node.setY(organism.get(root).getY() + organism.get(root).getRadius() + getRadius());
 		for (String num : nums) {
 			int idx = Integer.parseInt(num);
 			if (idx < organism.size())
@@ -102,21 +113,30 @@ public class ReproductiveNode extends OrganicNode {
 		sim.addOrganicNode(node);
 	}
 
+	/**
+	 * Copy this node's code into a new ReproductiveNode, with some occasional code errors
+	 */
 	private void reproduce() {
-		children++;
-		ReproductiveNode child = new ReproductiveNode(null, getX(), getY(), INITIAL_ENERGY, shuffleCode(permCode, children), sim, grid);
+		childCount++;
+		ReproductiveNode child = new ReproductiveNode(null, getX(), getY(), INITIAL_ENERGY,
+				getMutatedCode(permCode, childCount), sim, grid);
 		sim.addOrganicNode(child);
-		child.setvX(2*(Math.random() - 0.5));
-		child.setvY(2*(Math.random() - 0.5));
+		child.setvX(INITIAL_SPEED*(Math.random() - 0.5));
+		child.setvY(INITIAL_SPEED*(Math.random() - 0.5));
 	}
 
-	private static List<String> shuffleCode(List<String> permCode, int children){
+	/**
+	 * Copy this node's code into a new list with errors such as deletions, insertions, and swaps
+	 * @param permCode the initial code
+	 * @param children the number of children this node has created
+	 * @return the new code
+	 */
+	private static List<String> getMutatedCode(List<String> permCode, int children){
 		List<String> newCode = new ArrayList<>();
 		double genError = Math.min(MAX_GENERATIONAL_ERROR, children * GENERATIONAL_ERROR_GROWTH);
 		int[] frameShift = new int[permCode.size()+1];
 		for (int i = 0; i < permCode.size(); i++) {
-
-			// delete a node
+			// Delete a node
 			frameShift[i+1] = frameShift[i];
 			if (genError + INSTRUCTION_DELETION_CHANCE > Math.random()) {
 				frameShift[i+1]++;
@@ -129,10 +149,10 @@ public class ReproductiveNode extends OrganicNode {
 			String newInstruction;
 			StringBuilder newNums = new StringBuilder();
 
-			// swap this node's word
+			// Swap this node's word
 			if (genError + WORD_TRANSFORM_CHANCE > Math.random())
 				newInstruction = NODE_TYPES[(int) (Math.random() * NODE_TYPES.length)];
-			// normal circumstances
+			// Normal word
 			else
 				newInstruction = word;
 
@@ -170,7 +190,7 @@ public class ReproductiveNode extends OrganicNode {
 
 	@Override
 	public double getHunger() {
-		return hunger * (children+1);
+		return hunger * (childCount +1);
 	}
 
 	public List<OrganicNode> getOrganism() {

@@ -1,11 +1,14 @@
 package biotic.organic_nodes;
 
-import biotic.Food;
+import biotic.particles.Food;
 import physics.Circle;
 import physics.Node;
 
 import java.awt.Color;
 
+/**
+ * Absorbs energy from green food particles
+ */
 public class EatingNode extends EnergyAbsorbingNode {
 	private static final double ENERGY_PER_MASS = 2.8;
 
@@ -23,6 +26,10 @@ public class EatingNode extends EnergyAbsorbingNode {
 		this.resistance = 0.5;
 	}
 
+	/**
+	 * Overrides circle method to detect food collisions
+	 * @param other the circle collided with
+	 */
 	@Override
 	public void collidedWith(Circle other) {
 		super.collidedWith(other);
@@ -30,6 +37,7 @@ public class EatingNode extends EnergyAbsorbingNode {
 			other.setDeletable(true);
 			double gainedEnergy = other.getMass() * ENERGY_PER_MASS;
 
+			// Save excess energy in case adjacent nodes can store it
 			if (getEnergy() + gainedEnergy > getMaxEnergy()) {
 				setExcess(Math.min(MAX_EXCESS, getExcess() + gainedEnergy));
 				setEnergy(getMaxEnergy());

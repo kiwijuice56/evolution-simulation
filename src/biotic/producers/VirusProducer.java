@@ -1,10 +1,13 @@
-package biotic;
+package biotic.producers;
 
-import biotic.organic_nodes.PredationNode;
+import biotic.particles.Virus;
 import simulation.Simulation;
 
 import java.awt.Color;
 
+/**
+ * Spawns new food circle surrounding the exterior of this circle
+ */
 public class VirusProducer extends Producer {
 	private static final double MASS_MIN = 3;
 	private static final double MASS_MAX = 6;
@@ -20,6 +23,9 @@ public class VirusProducer extends Producer {
 		this.color = new Color(200, 15, 15);
 	}
 
+	/**
+	 * Overrides producer method to create virus circles
+	 */
 	@Override
 	public void produce() {
 		if (VIRUS_CHANCE > Math.random()) {
