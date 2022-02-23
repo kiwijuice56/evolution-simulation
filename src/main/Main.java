@@ -4,6 +4,7 @@ import graphic_interface.ApplicationFrame;
 import physics.CollisionGrid;
 import simulation.Simulation;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -14,7 +15,7 @@ public class Main {
 	public static final int WIDTH = 2400;
 	public static final int HEIGHT = 1800;
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) throws InterruptedException, IOException {
 		CollisionGrid grid = new CollisionGrid(WIDTH, HEIGHT, 20);
 		Simulation sim = new Simulation(grid);
 		ApplicationFrame frame = new ApplicationFrame(grid, sim);

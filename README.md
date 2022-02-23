@@ -1,5 +1,5 @@
-# evolution-simulation
-This program simulates emergence and natural selection in biological systems using a few basic components.
+# ![icon](resources/icon.png) evolution-simulation ![icon](resources/icon.png)
+ This program simulates emergence and natural selection in biological systems using a few basic components.
 
 <p align="center">
   <img src="img/screenshot1.png" alt="sample execution"/>

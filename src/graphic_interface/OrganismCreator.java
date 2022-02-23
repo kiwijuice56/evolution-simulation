@@ -26,12 +26,16 @@ public class OrganismCreator extends JPanel {
 
 	private final JTextPane text;
 	private final JLabel errorLabel;
+	private final GridPanel gridPanel;
+
+	private static final double SPAWN_RADIUS = 96.0;
 
 	private boolean styleEdit = true;
 
-	public OrganismCreator(Simulation sim, CollisionGrid grid) {
+	public OrganismCreator(GridPanel gridPanel, Simulation sim, CollisionGrid grid) {
 		this.sim = sim;
 		this.grid = grid;
+		this.gridPanel = gridPanel;
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBackground(new Color(42, 42, 50));
@@ -110,8 +114,8 @@ public class OrganismCreator extends JPanel {
 			if (validateInput(code)) {
 				sim.addOrganicNode(new ReproductiveNode(
 						null,
-						4 + (grid.getWidth()-4) * Math.random(),
-						4 + (grid.getHeight()-4) * Math.random(),
+						-gridPanel.getxOffset() + gridPanel.getWidth()/2.0 + (Math.random()-0.5)*SPAWN_RADIUS,
+						-gridPanel.getyOffset() + gridPanel.getHeight()/2.0 + (Math.random()-0.5)*SPAWN_RADIUS,
 						2.5, code, sim, grid));
 			}
 		});

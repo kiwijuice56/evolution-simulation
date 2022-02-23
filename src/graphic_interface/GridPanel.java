@@ -3,9 +3,7 @@ package graphic_interface;
 import physics.*;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 /**
@@ -26,6 +24,13 @@ public class GridPanel extends JPanel implements MouseMotionListener, MouseListe
 		setBorder(BorderFactory.createLineBorder(new Color(95,95,115)));
 		addMouseListener(this);
 		addMouseMotionListener(this);
+		addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+				xOffset = Math.min(0, Math.max(-grid.getWidth() + getWidth(), xOffset));
+				yOffset = Math.min(0, Math.max(-grid.getHeight() + getHeight(), yOffset));
+			}
+		});
 	}
 
 	/**
@@ -38,11 +43,13 @@ public class GridPanel extends JPanel implements MouseMotionListener, MouseListe
 		g.fillRect(0, 0, width, height);
 
 		// Draws grid lines
-		g.setColor(new Color(35,35,35));
+		g.setColor(new Color(22,22,25));
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setStroke(new BasicStroke(2));
 		for (int i = 0; i <= grid.getHeight(); i += grid.getCellSize())
-			g.drawLine(xOffset, i+getyOffset(), grid.getWidth()+xOffset, i+getyOffset());
+			g2.drawLine(xOffset, i+getyOffset(), grid.getWidth()+xOffset, i+getyOffset());
 		for (int j = 0; j <= grid.getWidth(); j += grid.getCellSize())
-			g.drawLine(j+getxOffset(), grid.getHeight()+yOffset, j+getxOffset(), yOffset);
+			g2.drawLine(j+getxOffset(), grid.getHeight()+yOffset, j+getxOffset(), yOffset);
 
 		for (Circle c : new ArrayList<>(grid.getCircles()))
 			if (c != null)
@@ -61,6 +68,8 @@ public class GridPanel extends JPanel implements MouseMotionListener, MouseListe
 			initialX = e.getX();
 		if (Math.abs(initialY - yOffset) > 64)
 			initialY = e.getY();
+		xOffset = Math.min(0, Math.max(-grid.getWidth() + getWidth(), xOffset));
+		yOffset = Math.min(0, Math.max(-grid.getHeight() + getHeight(), yOffset));
 	}
 
 	/**

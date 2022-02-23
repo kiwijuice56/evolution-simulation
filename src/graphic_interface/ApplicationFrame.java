@@ -7,7 +7,11 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 
 /**
@@ -21,7 +25,7 @@ public class ApplicationFrame extends JFrame  {
 	private boolean limitedFPS = true;
 	private boolean paused = false;
 
-	public ApplicationFrame(CollisionGrid grid, Simulation sim) {
+	public ApplicationFrame(CollisionGrid grid, Simulation sim) throws IOException {
 		setTitle("Evolution simulation");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
@@ -41,7 +45,7 @@ public class ApplicationFrame extends JFrame  {
 
 		getContentPane().add(createBottomPanel(), BorderLayout.SOUTH);
 
-		getContentPane().add(new OrganismCreator(sim, grid), BorderLayout.EAST);
+		getContentPane().add(new OrganismCreator(panel, sim, grid), BorderLayout.EAST);
 
 		setSize(1200, 700);
 		setVisible(true);
@@ -51,7 +55,7 @@ public class ApplicationFrame extends JFrame  {
 	 * Initializes bottom panel and all associated labels and buttons
 	 * @return the initialized panel
 	 */
-	private JPanel createBottomPanel() {
+	private JPanel createBottomPanel() throws IOException {
 		JPanel bottomPanel = new JPanel();
 		bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.X_AXIS));
 		bottomPanel.setBackground(new Color(42, 42, 50));
@@ -71,26 +75,36 @@ public class ApplicationFrame extends JFrame  {
 		circleLabel.setBorder(new EmptyBorder(0,0,0,16));
 		bottomPanel.add(circleLabel);
 
+		Icon playIcon = new ImageIcon(ImageIO.read(ApplicationFrame.class.getResource("/pause.png")));
+		Icon pauseIcon = new ImageIcon(ImageIO.read(ApplicationFrame.class.getResource("/pause2.png")));
 		DarkJButton pauseButton = new DarkJButton("Pause");
+		pauseButton.setIcon(pauseIcon);
 		pauseButton.addActionListener(e -> {
 			if (e.getActionCommand().equals("Pause")) {
 				ApplicationFrame.this.setPaused(true);
-				pauseButton.setText("Unpause");
-			} else if (e.getActionCommand().equals("Unpause")) {
+				pauseButton.setIcon(playIcon);
+				pauseButton.setText("Play");
+			} else if (e.getActionCommand().equals("Play")) {
 				ApplicationFrame.this.setPaused(false);
+				pauseButton.setIcon(pauseIcon);
 				pauseButton.setText("Pause");
 			}
 		});
 		bottomPanel.add(pauseButton);
 
-		DarkJButton graphicsToggle = new DarkJButton("Turn Graphics Off");
+		Icon visibleIcon = new ImageIcon(ImageIO.read(ApplicationFrame.class.getResource("/visible.png")));
+		Icon hiddenIcon = new ImageIcon(ImageIO.read(ApplicationFrame.class.getResource("/hidden.png")));
+		DarkJButton graphicsToggle = new DarkJButton("Hide Graphics");
+		graphicsToggle.setIcon(visibleIcon);
 		graphicsToggle.addActionListener(e -> {
-			if (e.getActionCommand().equals("Turn Graphics Off")) {
+			if (e.getActionCommand().equals("Hide Graphics")) {
+				graphicsToggle.setIcon(hiddenIcon);
 				ApplicationFrame.this.setGraphicsActive(false);
-				graphicsToggle.setText("Turn Graphics On");
-			} else if (e.getActionCommand().equals("Turn Graphics On")) {
+				graphicsToggle.setText("Show Graphics");
+			} else if (e.getActionCommand().equals("Show Graphics")) {
+				graphicsToggle.setIcon(visibleIcon);
 				ApplicationFrame.this.setGraphicsActive(true);
-				graphicsToggle.setText("Turn Graphics Off");
+				graphicsToggle.setText("Hide Graphics");
 			}
 		});
 		bottomPanel.add(graphicsToggle);
@@ -106,6 +120,33 @@ public class ApplicationFrame extends JFrame  {
 			}
 		});
 		bottomPanel.add(fpsToggle);
+
+		JLabel link = new JLabel(" https://github.com/kiwijuice56/evolution-simulation");
+		link.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		link.setForeground(new Color(65,125,210));
+		link.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					Desktop.getDesktop().browse(new URI("https://github.com/kiwijuice56/evolution-simulation"));
+				} catch (IOException | URISyntaxException e1) {
+					e1.printStackTrace();
+				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				link.setForeground(new Color(15,200,150));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				link.setForeground(new Color(65,95,220));
+			}
+		});
+
+		bottomPanel.add(link);
+
 		return bottomPanel;
 	}
 
@@ -146,6 +187,8 @@ public class ApplicationFrame extends JFrame  {
 	public void setPaused(boolean paused) {
 		this.paused = paused;
 	}
+
+
 
 	/* * * * * * * * * * * * * * * * * * * * * */
 }
