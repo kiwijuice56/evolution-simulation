@@ -19,9 +19,9 @@ public class RunningNode extends DirectionalNode {
 		this.mass = 2.0;
 		this.radius = 5.0;
 		this.color = new Color(125,25,215);
-		this.hunger = 0.000025;
+		this.hunger = 0.0004;
 		this.resistance = 1.0;
-		this.impulseStrength = -0.035;
+		this.impulseStrength = -0.28;
 	}
 
 	/**

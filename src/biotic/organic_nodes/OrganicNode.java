@@ -22,7 +22,7 @@ public class OrganicNode extends Node {
 
 	public OrganicNode(Node linkedNode, double x, double y, double energy) {
 		super(linkedNode, x, y);
-		this.hunger = 0.000005;
+		this.hunger = 0.00004;
 		this.maxEnergy = 1.0;
 		this.energy = energy;
 		this.color = new Color(35, 55, 225);

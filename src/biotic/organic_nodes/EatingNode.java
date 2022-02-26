@@ -22,7 +22,7 @@ public class EatingNode extends EnergyAbsorbingNode {
 		this.mass = 3.0;
 		this.color = new Color(45, 195, 255);
 		this.maxEnergy = 2.3;
-		this.hunger = 0.0005;
+		this.hunger = 0.004;
 		this.resistance = 0.5;
 	}
 

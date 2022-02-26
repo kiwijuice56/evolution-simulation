@@ -8,8 +8,8 @@ import java.awt.Color;
  * Rotates randomly in all directions
  */
 public class RotationalNode extends OrganicNode {
-	private final static double MAX_ANGLE_CHANGE = 0.02;
-	private final static double IMPULSE_STRENGTH = 0.02;
+	private final static double MAX_ANGLE_CHANGE = 0.16;
+	private final static double IMPULSE_STRENGTH = 0.16;
 	private double angle;
 
 	public RotationalNode() {
@@ -21,7 +21,7 @@ public class RotationalNode extends OrganicNode {
 		this.radius = 5.0;
 		this.mass = 3.0;
 		this.color = new Color(175, 90, 125);
-		this.hunger = 0.00045;
+		this.hunger = 0.0036;
 		this.resistance = 1.0;
 		angle = Math.random() * Math.PI;
 	}
@@ -31,7 +31,7 @@ public class RotationalNode extends OrganicNode {
 	 */
 	@Override
 	public void collisionStep() {
-		angle = (angle + Math.random()/50) % (2*Math.PI);
+		angle = (angle + Math.random() * MAX_ANGLE_CHANGE) % (2*Math.PI);
 		setvX(getvX() + Math.cos(angle) * IMPULSE_STRENGTH);
 		setvY(getvY() + Math.sin(angle) * IMPULSE_STRENGTH);
 	}

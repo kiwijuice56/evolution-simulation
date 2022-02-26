@@ -39,17 +39,18 @@ public class GridPanel extends JPanel implements MouseMotionListener, MouseListe
 	 */
 	@Override
 	public void paintComponent(Graphics g) {
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setStroke(new BasicStroke(2));
+
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, width, height);
 
 		// Draws grid lines
 		g.setColor(new Color(22,22,25));
-		Graphics2D g2 = (Graphics2D) g;
-		g2.setStroke(new BasicStroke(2));
 		for (int i = 0; i <= grid.getHeight(); i += grid.getCellSize())
-			g2.drawLine(xOffset, i+getyOffset(), grid.getWidth()+xOffset, i+getyOffset());
+			g.drawLine(xOffset, i+getyOffset(), grid.getWidth()+xOffset, i+getyOffset());
 		for (int j = 0; j <= grid.getWidth(); j += grid.getCellSize())
-			g2.drawLine(j+getxOffset(), grid.getHeight()+yOffset, j+getxOffset(), yOffset);
+			g.drawLine(j+getxOffset(), grid.getHeight()+yOffset, j+getxOffset(), yOffset);
 
 		for (Circle c : new ArrayList<>(grid.getCircles()))
 			if (c != null)

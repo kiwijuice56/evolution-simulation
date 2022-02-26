@@ -55,7 +55,7 @@ public class ReproductiveNode extends OrganicNode {
 		this.radius = 4.0;
 		this.mass = 5.0;
 		this.color = new Color(255, 255, 255);
-		this.hunger = 0.0006;
+		this.hunger = 0.0048;
 		this.maxEnergy = 6.0;
 		this.resistance = 0.75;
 	}

@@ -13,8 +13,8 @@ public class FoodProducer extends Producer {
 	private static final double MASS_MAX = 6;
 	private static final double RADIUS_MIN = 8;
 	private static final double RADIUS_MAX = 16;
-	private static final double FOOD_SPEED = 0.35;
-	private static final double FOOD_CHANCE = 0.005;
+	private static final double FOOD_SPEED = 2.8;
+	private static final double FOOD_CHANCE = 0.04;
 
 	public FoodProducer(double x, double y, Simulation sim) {
 		super(x, y, sim);

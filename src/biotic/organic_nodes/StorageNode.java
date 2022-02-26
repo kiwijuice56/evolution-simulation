@@ -19,7 +19,7 @@ public class StorageNode extends OrganicNode {
 		this.color = new Color(255,200,0);
 		this.radius = getRadius();
 		this.maxEnergy = 8.0;
-		this.hunger = 0.000005;
+		this.hunger = 0.00004;
 		this.resistance = 1.25;
 	}
 

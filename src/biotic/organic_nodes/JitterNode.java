@@ -8,7 +8,7 @@ import java.awt.Color;
  * Moves randomly in all directions
  */
 public class JitterNode extends OrganicNode {
-	private final static double IMPULSE_STRENGTH = 0.04;
+	private final static double IMPULSE_STRENGTH = 0.32;
 
 	public JitterNode() {
 		this(null, 0, 0, 1.0);
@@ -19,7 +19,7 @@ public class JitterNode extends OrganicNode {
 		this.color = new Color(155, 135, 255);
 		this.radius = 5.0;
 		this.mass = 3.0;
-		this.hunger = 0.00015;
+		this.hunger = 0.0012;
 		this.resistance = 1.0;
 	}
 

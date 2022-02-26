@@ -40,6 +40,13 @@ public class OrganismCreator extends JPanel {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBackground(new Color(42, 42, 50));
 
+		add(createEditorButtons());
+
+		errorLabel = new JLabel("Type an organism code");
+		errorLabel.setForeground(new Color(200, 203, 207));
+		errorLabel.setAlignmentX(CENTER_ALIGNMENT);
+		add(errorLabel);
+
 		text = new JTextPane();
 		text.setFont(new Font("Consolas", Font.PLAIN, 16));
 		text.setEditable(true);
@@ -59,12 +66,9 @@ public class OrganismCreator extends JPanel {
 		SimpleAttributeSet attrs = new SimpleAttributeSet();
 		StyleConstants.setForeground(attrs, new Color(200, 203, 207));
 
-		Runnable removeError = new Runnable() {
-			@Override
-			public void run() {
-				errorLabel.setText(" ");
-				text.getStyledDocument().setCharacterAttributes(0, text.getText().length()+1, attrs, true);
-			}
+		Runnable removeError = () -> {
+			errorLabel.setText(" ");
+			text.getStyledDocument().setCharacterAttributes(0, text.getText().length()+1, attrs, true);
 		};
 		text.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
@@ -91,13 +95,6 @@ public class OrganismCreator extends JPanel {
 			}
 		});
 		text.setText("nod 0");
-
-		add(createEditorButtons());
-
-		errorLabel = new JLabel("Type an organism code");
-		errorLabel.setForeground(new Color(200, 203, 207));
-		errorLabel.setAlignmentX(CENTER_ALIGNMENT);
-		add(errorLabel);
 	}
 
 	/**

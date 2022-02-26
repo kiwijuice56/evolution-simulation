@@ -13,8 +13,8 @@ public class VirusProducer extends Producer {
 	private static final double MASS_MAX = 6;
 	private static final double RADIUS_MIN = 8;
 	private static final double RADIUS_MAX = 16;
-	private static final double VIRUS_SPEED = 0.35;
-	private static final double VIRUS_CHANCE = 0.00075;
+	private static final double VIRUS_SPEED = 2.8;
+	private static final double VIRUS_CHANCE = 0.006;
 
 	public VirusProducer(double x, double y, Simulation sim) {
 		super(x, y, sim);

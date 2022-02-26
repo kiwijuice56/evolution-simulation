@@ -9,10 +9,6 @@ public abstract class EnergyAbsorbingNode extends OrganicNode {
 	protected static final double MAX_EXCESS = 2.0;
 	private double excess;
 
-	public EnergyAbsorbingNode() {
-		this(null, 0, 0, 1.0);
-	}
-
 	public EnergyAbsorbingNode(Node linkedNode, double x, double y, double energy) {
 		super(linkedNode, x, y, energy);
 	}

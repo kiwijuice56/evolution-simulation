@@ -21,7 +21,7 @@ public class PredationNode extends EnergyAbsorbingNode {
 		super(linkedNode, x, y, energy);
 		this.radius = 9.0;
 		this.color = new Color(255, 0, 25);
-		this.hunger = 0.0001;
+		this.hunger = 0.0008;
 		this.maxEnergy = 4.5;
 		this.root = root;
 	}

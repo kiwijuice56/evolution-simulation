@@ -20,9 +20,9 @@ public class FollowingNode extends DirectionalNode {
 		this.mass = 2.0;
 		this.radius = 5.0;
 		this.color = new Color(255,75,75);
-		this.hunger = 0.000025;
+		this.hunger = 0.0002;
 		this.resistance = 1.0;
-		this.impulseStrength = 0.035;
+		this.impulseStrength = 0.28;
 	}
 
 	/**

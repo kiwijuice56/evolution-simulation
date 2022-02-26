@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
  * Main runner of the program, handles frames per second
  */
 public class Main {
-	private static final long MIN_WAIT_PER_FRAME = 2000000;
+	private static final long MIN_WAIT_PER_FRAME = 16000000;
 	public static final int WIDTH = 2400;
 	public static final int HEIGHT = 1800;
 

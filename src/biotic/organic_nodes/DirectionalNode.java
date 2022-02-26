@@ -13,11 +13,7 @@ import java.util.Set;
 public abstract class DirectionalNode extends OrganicNode {
 	private final CollisionGrid grid;
 	private final ReproductiveNode root;
-	protected double impulseStrength = 0.035;
-
-	public DirectionalNode(CollisionGrid grid, ReproductiveNode root) {
-		this(grid, root, null, 0, 0, 1.0);
-	}
+	protected double impulseStrength = 0.28;
 
 	public DirectionalNode(CollisionGrid grid, ReproductiveNode root, Node linkedNode, double x, double y, double energy) {
 		super(linkedNode, x, y, energy);

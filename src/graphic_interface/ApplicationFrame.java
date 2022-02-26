@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Contains all GUI for the program
@@ -43,19 +44,67 @@ public class ApplicationFrame extends JFrame  {
 		GridPanel panel = new GridPanel(grid);
 		getContentPane().add(panel, BorderLayout.CENTER);
 
+		getContentPane().add(createTopPanel(), BorderLayout.NORTH);
 		getContentPane().add(createBottomPanel(), BorderLayout.SOUTH);
 
-		getContentPane().add(new OrganismCreator(panel, sim, grid), BorderLayout.EAST);
+		getContentPane().add(new OrganismCreator(panel, sim, grid), BorderLayout.WEST);
 
 		setSize(1200, 700);
 		setVisible(true);
 	}
 
 	/**
-	 * Initializes bottom panel and all associated labels and buttons
+	 * Initializes top panel and all associated buttons
 	 * @return the initialized panel
 	 */
-	private JPanel createBottomPanel() throws IOException {
+	private JPanel createTopPanel() throws IOException {
+		JPanel topPanel = new JPanel();
+		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
+		topPanel.setBackground(new Color(42, 42, 50));
+
+		topPanel.add(Box.createHorizontalGlue());
+
+		Icon playIcon = new ImageIcon(ImageIO.read(Objects.requireNonNull(ApplicationFrame.class.getResource("/play.png"))));
+		Icon pauseIcon = new ImageIcon(ImageIO.read(Objects.requireNonNull(ApplicationFrame.class.getResource("/pause.png"))));
+		DarkJButton pauseButton = new DarkJButton("");
+		pauseButton.setIcon(pauseIcon);
+		pauseButton.addActionListener(e -> {
+			pauseButton.setIcon(isPaused() ? pauseIcon : playIcon);
+			setPaused(!isPaused());
+		});
+		topPanel.add(pauseButton);
+
+		Icon visibleIcon = new ImageIcon(ImageIO.read(Objects.requireNonNull(ApplicationFrame.class.getResource("/visible.png"))));
+		Icon hiddenIcon = new ImageIcon(ImageIO.read(Objects.requireNonNull(ApplicationFrame.class.getResource("/hidden.png"))));
+		DarkJButton graphicsToggle = new DarkJButton("");
+		graphicsToggle.setIcon(visibleIcon);
+
+		graphicsToggle.addActionListener(e -> {
+			graphicsToggle.setIcon(isGraphicsActive() ? hiddenIcon : visibleIcon);
+			setGraphicsActive(!isGraphicsActive());
+		});
+		topPanel.add(graphicsToggle);
+
+		Icon fpsLockedIcon = new ImageIcon(ImageIO.read(Objects.requireNonNull(ApplicationFrame.class.getResource("/fps_locked.png"))));
+		Icon fpsUnlockedIcon = new ImageIcon(ImageIO.read(Objects.requireNonNull(ApplicationFrame.class.getResource("/fps_unlocked.png"))));
+		DarkJButton fpsToggle = new DarkJButton("");
+		fpsToggle.setIcon(fpsLockedIcon);
+		fpsToggle.addActionListener(e -> {
+			fpsToggle.setIcon(isLimitedFPS() ? fpsUnlockedIcon : fpsLockedIcon);
+			setLimitedFPS(!isLimitedFPS());
+		});
+		topPanel.add(fpsToggle);
+
+		topPanel.add(Box.createHorizontalGlue());
+
+		return topPanel;
+	}
+
+	/**
+	 * Initializes bottom panel and all associated labels
+	 * @return the initialized panel
+	 */
+	private JPanel createBottomPanel() {
 		JPanel bottomPanel = new JPanel();
 		bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.X_AXIS));
 		bottomPanel.setBackground(new Color(42, 42, 50));
@@ -75,53 +124,9 @@ public class ApplicationFrame extends JFrame  {
 		circleLabel.setBorder(new EmptyBorder(0,0,0,16));
 		bottomPanel.add(circleLabel);
 
-		Icon playIcon = new ImageIcon(ImageIO.read(ApplicationFrame.class.getResource("/pause.png")));
-		Icon pauseIcon = new ImageIcon(ImageIO.read(ApplicationFrame.class.getResource("/pause2.png")));
-		DarkJButton pauseButton = new DarkJButton("Pause");
-		pauseButton.setIcon(pauseIcon);
-		pauseButton.addActionListener(e -> {
-			if (e.getActionCommand().equals("Pause")) {
-				ApplicationFrame.this.setPaused(true);
-				pauseButton.setIcon(playIcon);
-				pauseButton.setText("Play");
-			} else if (e.getActionCommand().equals("Play")) {
-				ApplicationFrame.this.setPaused(false);
-				pauseButton.setIcon(pauseIcon);
-				pauseButton.setText("Pause");
-			}
-		});
-		bottomPanel.add(pauseButton);
+		bottomPanel.add(Box.createHorizontalGlue());
 
-		Icon visibleIcon = new ImageIcon(ImageIO.read(ApplicationFrame.class.getResource("/visible.png")));
-		Icon hiddenIcon = new ImageIcon(ImageIO.read(ApplicationFrame.class.getResource("/hidden.png")));
-		DarkJButton graphicsToggle = new DarkJButton("Hide Graphics");
-		graphicsToggle.setIcon(visibleIcon);
-		graphicsToggle.addActionListener(e -> {
-			if (e.getActionCommand().equals("Hide Graphics")) {
-				graphicsToggle.setIcon(hiddenIcon);
-				ApplicationFrame.this.setGraphicsActive(false);
-				graphicsToggle.setText("Show Graphics");
-			} else if (e.getActionCommand().equals("Show Graphics")) {
-				graphicsToggle.setIcon(visibleIcon);
-				ApplicationFrame.this.setGraphicsActive(true);
-				graphicsToggle.setText("Hide Graphics");
-			}
-		});
-		bottomPanel.add(graphicsToggle);
-
-		DarkJButton fpsToggle = new DarkJButton("Unlimited FPS");
-		fpsToggle.addActionListener(e -> {
-			if (e.getActionCommand().equals("Unlimited FPS")) {
-				ApplicationFrame.this.setLimitedFPS(false);
-				fpsToggle.setText("Limited FPS");
-			} else if (e.getActionCommand().equals("Limited FPS")) {
-				ApplicationFrame.this.setLimitedFPS(true);
-				fpsToggle.setText("Unlimited FPS");
-			}
-		});
-		bottomPanel.add(fpsToggle);
-
-		JLabel link = new JLabel(" https://github.com/kiwijuice56/evolution-simulation");
+		JLabel link = new JLabel(" https://github.com/kiwijuice56/evolution-simulation ");
 		link.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		link.setForeground(new Color(65,125,210));
 		link.addMouseListener(new MouseAdapter() {

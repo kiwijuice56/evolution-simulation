@@ -21,9 +21,9 @@ public class GatheringNode extends DirectionalNode {
 		this.mass = 2.0;
 		this.radius = 5.0;
 		this.color = new Color(95,255,95);
-		this.hunger = 0.000025;
+		this.hunger = 0.0002;
 		this.resistance = 1.0;
-		this.impulseStrength = 0.035;
+		this.impulseStrength = 0.28;
 	}
 
 	/**
